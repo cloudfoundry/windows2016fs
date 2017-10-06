@@ -1,0 +1,5 @@
+FROM microsoft/nanoserver
+
+RUN cmd.exe /C echo hello > out.txt
+RUN cmd.exe /C echo goodbye > out1.txt
+
