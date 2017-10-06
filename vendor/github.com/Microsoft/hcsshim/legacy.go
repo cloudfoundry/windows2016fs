@@ -407,16 +407,7 @@ func (w *legacyLayerWriter) reset() {
 }
 
 // copyFileWithMetadata copies a file using the backup/restore APIs in order to preserve metadata
-func copyFileWithMetadata(srcPath, destPath string, isDir bool) (fileInfo *winio.FileBasicInfo, err error) {
-	createDisposition := uint32(syscall.CREATE_NEW)
-	if isDir {
-		err = os.Mkdir(destPath, 0)
-		if err != nil {
-			return nil, err
-		}
-		createDisposition = syscall.OPEN_EXISTING
-	}
-
+func copyFileWithMetadata(srcPath, destPath string) (fileInfo *winio.FileBasicInfo, err error) {
 	src, err := openFileOrDir(srcPath, syscall.GENERIC_READ|winio.ACCESS_SYSTEM_SECURITY, syscall.OPEN_EXISTING)
 	if err != nil {
 		return nil, err
@@ -428,6 +419,15 @@ func copyFileWithMetadata(srcPath, destPath string, isDir bool) (fileInfo *winio
 	fileInfo, err = winio.GetFileBasicInfo(src)
 	if err != nil {
 		return nil, err
+	}
+
+	createDisposition := uint32(syscall.CREATE_NEW)
+	if fileInfo.FileAttributes&syscall.FILE_ATTRIBUTE_DIRECTORY != 0 {
+		err = os.Mkdir(destPath, 0)
+		if err != nil {
+			return nil, err
+		}
+		createDisposition = syscall.OPEN_EXISTING
 	}
 
 	dest, err := openFileOrDir(destPath, syscall.GENERIC_READ|syscall.GENERIC_WRITE|winio.WRITE_DAC|winio.WRITE_OWNER|winio.ACCESS_SYSTEM_SECURITY, createDisposition)
@@ -476,7 +476,7 @@ func cloneTree(srcPath, destPath string, mutatedFiles map[string]bool) error {
 		// utility VM import must be copied. All other files can be hard linked.
 		isReparsePoint := info.Sys().(*syscall.Win32FileAttributeData).FileAttributes&syscall.FILE_ATTRIBUTE_REPARSE_POINT != 0
 		if info.IsDir() || isReparsePoint || mutatedFiles[relPath] {
-			fi, err := copyFileWithMetadata(srcFilePath, destFilePath, info.IsDir())
+			fi, err := copyFileWithMetadata(srcFilePath, destFilePath)
 			if err != nil {
 				return err
 			}

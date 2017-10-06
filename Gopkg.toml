@@ -31,7 +31,8 @@
 
 [[constraint]]
   name = "github.com/Microsoft/hcsshim"
-  version = "0.6.6"
+  branch = "go1.9"
+  source = "github.com/greenhouse-org/hcsshim"
 
 [[constraint]]
   name = "github.com/onsi/ginkgo"
