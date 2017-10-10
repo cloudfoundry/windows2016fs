@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"code.cloudfoundry.org/windows2016fs/compress"
-	"code.cloudfoundry.org/windows2016fs/hydrator"
+	"code.cloudfoundry.org/windows2016fs/downloader"
 	"code.cloudfoundry.org/windows2016fs/registry"
 )
 
@@ -46,9 +46,9 @@ func mainBody() error {
 
 	r := registry.New("https://auth.docker.io", "https://registry.hub.docker.com", imageName, imageTag)
 	c := compress.New()
-	h := hydrator.New(tempDir, outFile, r, c, os.Stdout)
+	d := downloader.New(tempDir, outFile, r, c, os.Stdout)
 
-	if err := h.Run(); err != nil {
+	if err := d.Run(); err != nil {
 		return err
 	}
 	fmt.Println("Done.")

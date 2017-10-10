@@ -1,18 +1,18 @@
-package hydrator_test
+package downloader_test
 
 import (
 	"errors"
 	"io/ioutil"
 
-	"code.cloudfoundry.org/windows2016fs/hydrator"
-	"code.cloudfoundry.org/windows2016fs/hydrator/hydratorfakes"
+	"code.cloudfoundry.org/windows2016fs/downloader"
+	"code.cloudfoundry.org/windows2016fs/downloader/downloaderfakes"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/opencontainers/image-spec/specs-go/v1"
 )
 
-var _ = Describe("Hydrator", func() {
+var _ = Describe("Downloader", func() {
 	const (
 		downloadDir = "some-directory"
 		outputTgz   = "a-path/some-file.tgz"
@@ -21,9 +21,9 @@ var _ = Describe("Hydrator", func() {
 	var (
 		layers     []v1.Descriptor
 		manifest   v1.Manifest
-		registry   *hydratorfakes.FakeRegistry
-		compressor *hydratorfakes.FakeCompressor
-		h          *hydrator.Hydrator
+		registry   *downloaderfakes.FakeRegistry
+		compressor *downloaderfakes.FakeCompressor
+		d          *downloader.Downloader
 	)
 
 	BeforeEach(func() {
@@ -32,17 +32,17 @@ var _ = Describe("Hydrator", func() {
 			{Digest: "layer2"},
 		}
 		manifest = v1.Manifest{Layers: layers}
-		registry = &hydratorfakes.FakeRegistry{}
-		compressor = &hydratorfakes.FakeCompressor{}
+		registry = &downloaderfakes.FakeRegistry{}
+		compressor = &downloaderfakes.FakeCompressor{}
 
 		registry.DownloadManifestReturnsOnCall(0, manifest, nil)
 
-		h = hydrator.New(downloadDir, outputTgz, registry, compressor, ioutil.Discard)
+		d = downloader.New(downloadDir, outputTgz, registry, compressor, ioutil.Discard)
 	})
 
 	Describe("Run", func() {
 		It("Downloads the manifest, all the layers, and tars them up", func() {
-			Expect(h.Run()).To(Succeed())
+			Expect(d.Run()).To(Succeed())
 
 			Expect(registry.DownloadManifestCallCount()).To(Equal(1))
 			Expect(registry.DownloadManifestArgsForCall(0)).To(Equal("some-directory"))
@@ -68,7 +68,7 @@ var _ = Describe("Hydrator", func() {
 		})
 
 		It("returns an error", func() {
-			Expect(h.Run().Error()).To(Equal("couldn't download manifest"))
+			Expect(d.Run().Error()).To(Equal("couldn't download manifest"))
 			Expect(registry.DownloadLayerCallCount()).To(Equal(0))
 			Expect(compressor.WriteTgzCallCount()).To(Equal(0))
 		})
@@ -80,7 +80,7 @@ var _ = Describe("Hydrator", func() {
 		})
 
 		It("returns an error", func() {
-			Expect(h.Run().Error()).To(Equal("couldn't download layer2"))
+			Expect(d.Run().Error()).To(Equal("couldn't download layer2"))
 			Expect(compressor.WriteTgzCallCount()).To(Equal(0))
 		})
 	})
@@ -91,7 +91,7 @@ var _ = Describe("Hydrator", func() {
 		})
 
 		It("returns an error", func() {
-			Expect(h.Run().Error()).To(Equal("couldn't create tar"))
+			Expect(d.Run().Error()).To(Equal("couldn't create tar"))
 		})
 	})
 })

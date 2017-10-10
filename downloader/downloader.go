@@ -1,4 +1,4 @@
-package hydrator
+package downloader
 
 import (
 	"fmt"
@@ -19,7 +19,7 @@ type Compressor interface {
 	WriteTgz(string, string) error
 }
 
-type Hydrator struct {
+type Downloader struct {
 	downloadDir string
 	outputTgz   string
 	registry    Registry
@@ -27,25 +27,25 @@ type Hydrator struct {
 	logger      io.Writer
 }
 
-func New(downloadDir string, outputTgz string, registry Registry, compressor Compressor, logger io.Writer) *Hydrator {
-	h := &Hydrator{
+func New(downloadDir string, outputTgz string, registry Registry, compressor Compressor, logger io.Writer) *Downloader {
+	d := &Downloader{
 		downloadDir: downloadDir,
 		outputTgz:   outputTgz,
 		registry:    registry,
 		compressor:  compressor,
 		logger:      logger,
 	}
-	return h
+	return d
 }
 
-func (h *Hydrator) Run() error {
-	manifest, err := h.registry.DownloadManifest(h.downloadDir)
+func (d *Downloader) Run() error {
+	manifest, err := d.registry.DownloadManifest(d.downloadDir)
 	if err != nil {
 		return err
 	}
 
 	totalLayers := len(manifest.Layers)
-	fmt.Fprintf(h.logger, "Downloading %d layers...\n", totalLayers)
+	fmt.Fprintf(d.logger, "Downloading %d layers...\n", totalLayers)
 	wg := sync.WaitGroup{}
 	errChan := make(chan error, 1)
 
@@ -53,13 +53,13 @@ func (h *Hydrator) Run() error {
 		l := layer
 		wg.Add(1)
 		go func() {
-			fmt.Fprintf(h.logger, "Layer %.15s begin\n", l.Digest)
+			fmt.Fprintf(d.logger, "Layer %.15s begin\n", l.Digest)
 			defer wg.Done()
-			if err := h.registry.DownloadLayer(l, h.downloadDir); err != nil {
+			if err := d.registry.DownloadLayer(l, d.downloadDir); err != nil {
 				errChan <- err
 				return
 			}
-			fmt.Fprintf(h.logger, "Layer %.15s end\n", l.Digest)
+			fmt.Fprintf(d.logger, "Layer %.15s end\n", l.Digest)
 		}()
 	}
 
@@ -75,6 +75,6 @@ func (h *Hydrator) Run() error {
 		return downloadErr
 	}
 
-	fmt.Fprintf(h.logger, "\nAll layers downloaded, writing %s...\n", h.outputTgz)
-	return h.compressor.WriteTgz(h.downloadDir, h.outputTgz)
+	fmt.Fprintf(d.logger, "\nAll layers downloaded, writing %s...\n", d.outputTgz)
+	return d.compressor.WriteTgz(d.downloadDir, d.outputTgz)
 }

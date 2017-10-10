@@ -5,7 +5,6 @@ import (
 	"sync"
 
 	"code.cloudfoundry.org/windows2016fs/layer"
-
 	"github.com/Microsoft/hcsshim"
 )
 
