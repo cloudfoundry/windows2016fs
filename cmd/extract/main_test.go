@@ -10,6 +10,7 @@ import (
 	"github.com/Microsoft/hcsshim"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"github.com/onsi/gomega/gbytes"
 	"github.com/onsi/gomega/gexec"
 )
 
@@ -17,6 +18,7 @@ var _ = Describe("Extract", func() {
 	var (
 		outputDir   string
 		extractSess *gexec.Session
+		extractArgs []string
 
 		imageLayers = []string{
 			"d9b2e5531a82b33cdd4312401a60c4ff7462531fa562131ee924d6d34ae8bdd7",
@@ -30,11 +32,12 @@ var _ = Describe("Extract", func() {
 		var err error
 		outputDir, err = ioutil.TempDir("", "extract.integration.test")
 		Expect(err).NotTo(HaveOccurred())
+		extractArgs = []string{rootfsTgz, outputDir}
 	})
 
 	JustBeforeEach(func() {
 		var err error
-		cmd := exec.Command(extractBin, rootfsTgz, outputDir)
+		cmd := exec.Command(extractBin, extractArgs...)
 		extractSess, err = gexec.Start(cmd, GinkgoWriter, GinkgoWriter)
 		Expect(err).NotTo(HaveOccurred())
 	})
@@ -105,6 +108,17 @@ var _ = Describe("Extract", func() {
 			for i, layer := range imageLayers {
 				Expect(getCreatedTime(filepath.Join(outputDir, layer))).To(Equal(originalCreateTimes[i]))
 			}
+		})
+	})
+
+	Context("when not provided rootfs tgz and output dir arguments", func() {
+		BeforeEach(func() {
+			extractArgs = []string{"some-arg"}
+		})
+
+		It("fails with a helpful error message", func() {
+			Eventually(extractSess).Should(gexec.Exit(1))
+			Expect(extractSess.Err).To(gbytes.Say("ERROR: Invalid arguments, usage: .*extract.exe <rootfs-tarball> <output-dir>"))
 		})
 	})
 })

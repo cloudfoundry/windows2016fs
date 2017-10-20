@@ -25,6 +25,10 @@ func main() {
 }
 
 func mainBody() error {
+	if len(os.Args) != 3 {
+		return fmt.Errorf("Invalid arguments, usage: %s <rootfs-tarball> <output-dir>", os.Args[0])
+	}
+
 	rootfstgz := os.Args[1]
 	outputDir := os.Args[2]
 
