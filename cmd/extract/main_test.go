@@ -57,8 +57,8 @@ var _ = Describe("Extract", func() {
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(data)).To(Equal(layer))
 		}
-		Expect(filepath.Join(outputDir, imageLayers[0], "Files", "out.txt")).To(BeAnExistingFile())
-		Expect(filepath.Join(outputDir, imageLayers[0], "Files", "out1.txt")).To(BeAnExistingFile())
+		Expect(filepath.Join(outputDir, imageLayers[0], "Files", "ProgramData", "out.txt")).To(BeAnExistingFile())
+		Expect(filepath.Join(outputDir, imageLayers[0], "Files", "ProgramData", "out1.txt")).To(BeAnExistingFile())
 	})
 
 	It("only outputs the top layer path to stdout", func() {
