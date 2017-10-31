@@ -18,14 +18,10 @@ import (
 	"github.com/opencontainers/image-spec/specs-go/v1"
 )
 
-const v1sha = "7406625cf20ba9cc3caeb6a56b1709665e8d094fef5047499603af51915b3f54"
-const v2sha = "c7de8bbeff027c47044143e7801269863160155afa90ddffc47dd0fc6920e2b7"
-
 var _ = Describe("Hydrate", func() {
 	var (
 		outputDir        string
 		hydrateArgs      []string
-		hydrateSess      *gexec.Session
 		imageName        string
 		imageTag         string
 		imageTarballName string
@@ -45,14 +41,6 @@ var _ = Describe("Hydrate", func() {
 		hydrateArgs = []string{}
 	})
 
-	JustBeforeEach(func() {
-		var err error
-
-		command := exec.Command(hydrateBin, hydrateArgs...)
-		hydrateSess, err = gexec.Start(command, GinkgoWriter, GinkgoWriter)
-		Expect(err).NotTo(HaveOccurred())
-	})
-
 	AfterEach(func() {
 		Expect(os.RemoveAll(outputDir)).To(Succeed())
 	})
@@ -64,10 +52,10 @@ var _ = Describe("Hydrate", func() {
 			})
 
 			It("downloads the correct version of the image", func() {
+				hydrateSess := runHydrate(hydrateArgs)
 				Eventually(hydrateSess).Should(gexec.Exit(0))
 
 				tarball := filepath.Join(outputDir, imageTarballName)
-				ItHasTheCorrectSHA256(tarball, v1sha)
 
 				imageContentsDir := extractTarball(tarball)
 				defer os.RemoveAll(imageContentsDir)
@@ -83,8 +71,24 @@ var _ = Describe("Hydrate", func() {
 				for _, layer := range im.Layers {
 					layerSHA := strings.TrimPrefix(string(layer.Digest), "sha256:")
 					blob := filepath.Join(imageContentsDir, layerSHA)
-					ItHasTheCorrectSHA256(blob, layerSHA)
+					Expect(sha256Sum(blob)).To(Equal(layerSHA))
 				}
+			})
+
+			Describe("tarball sha", func() {
+				It("creates an identical tarball when run multiple times", func() {
+					hydrateSess := runHydrate([]string{"--outputDir", outputDir, "--image", imageName, "--tag", imageTag})
+					Eventually(hydrateSess).Should(gexec.Exit(0))
+					tarballPath := filepath.Join(outputDir, imageTarballName)
+					actualSha1 := sha256Sum(tarballPath)
+					Expect(os.Remove(tarballPath)).To(Succeed())
+
+					hydrateSess = runHydrate([]string{"--outputDir", outputDir, "--image", imageName, "--tag", imageTag})
+					Eventually(hydrateSess).Should(gexec.Exit(0))
+					actualSha2 := sha256Sum(filepath.Join(outputDir, imageTarballName))
+
+					Expect(actualSha1).To(Equal(actualSha2))
+				})
 			})
 
 			Context("when not provided an image tag", func() {
@@ -97,10 +101,10 @@ var _ = Describe("Hydrate", func() {
 				})
 
 				It("downloads the latest image version", func() {
+					hydrateSess := runHydrate(hydrateArgs)
 					Eventually(hydrateSess).Should(gexec.Exit(0))
 
 					tarball := filepath.Join(outputDir, imageTarballName)
-					ItHasTheCorrectSHA256(tarball, v2sha)
 
 					imageContentsDir := extractTarball(tarball)
 					defer os.RemoveAll(imageContentsDir)
@@ -116,7 +120,7 @@ var _ = Describe("Hydrate", func() {
 					for _, layer := range im.Layers {
 						layerSHA := strings.TrimPrefix(string(layer.Digest), "sha256:")
 						blob := filepath.Join(imageContentsDir, layerSHA)
-						ItHasTheCorrectSHA256(blob, layerSHA)
+						Expect(sha256Sum(blob)).To(Equal(layerSHA))
 					}
 				})
 			})
@@ -128,6 +132,7 @@ var _ = Describe("Hydrate", func() {
 			})
 
 			It("errors", func() {
+				hydrateSess := runHydrate(hydrateArgs)
 				Eventually(hydrateSess).Should(gexec.Exit())
 				Expect(hydrateSess.ExitCode()).ToNot(Equal(0))
 				Expect(string(hydrateSess.Err.Contents())).To(ContainSubstring("ERROR: No image name provided"))
@@ -141,8 +146,9 @@ var _ = Describe("Hydrate", func() {
 		})
 
 		It("creates it and outputs the image tarball to that directory", func() {
+			hydrateSess := runHydrate(hydrateArgs)
 			Eventually(hydrateSess).Should(gexec.Exit(0))
-			ItHasTheCorrectSHA256(filepath.Join(outputDir, "random-dir", imageTarballName), v1sha)
+			Expect(filepath.Join(outputDir, "random-dir", imageTarballName)).To(BeAnExistingFile())
 		})
 	})
 
@@ -157,8 +163,9 @@ var _ = Describe("Hydrate", func() {
 		})
 
 		It("outputs to the system temp directory", func() {
+			hydrateSess := runHydrate(hydrateArgs)
 			Eventually(hydrateSess).Should(gexec.Exit(0))
-			ItHasTheCorrectSHA256(filepath.Join(os.TempDir(), imageTarballName), v1sha)
+			Expect(filepath.Join(os.TempDir(), imageTarballName)).To(BeAnExistingFile())
 		})
 	})
 })
@@ -171,17 +178,21 @@ func extractTarball(path string) string {
 	return tmpDir
 }
 
-func ItHasTheCorrectSHA256(file, expected string) {
-	By("having the correct SHA256", func() {
-		Expect(file).To(BeAnExistingFile())
-		f, err := os.Open(file)
-		Expect(err).NotTo(HaveOccurred())
-		defer f.Close()
+func sha256Sum(file string) string {
+	Expect(file).To(BeAnExistingFile())
+	f, err := os.Open(file)
+	Expect(err).NotTo(HaveOccurred())
+	defer f.Close()
 
-		h := sha256.New()
-		_, err = io.Copy(h, f)
-		Expect(err).NotTo(HaveOccurred())
-		actualSHA := fmt.Sprintf("%x", h.Sum(nil))
-		Expect(actualSHA).To(Equal(expected))
-	})
+	h := sha256.New()
+	_, err = io.Copy(h, f)
+	Expect(err).NotTo(HaveOccurred())
+	return fmt.Sprintf("%x", h.Sum(nil))
+}
+
+func runHydrate(args []string) *gexec.Session {
+	command := exec.Command(hydrateBin, args...)
+	hydrateSess, err := gexec.Start(command, GinkgoWriter, GinkgoWriter)
+	Expect(err).NotTo(HaveOccurred())
+	return hydrateSess
 }
