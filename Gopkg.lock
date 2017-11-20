@@ -17,7 +17,7 @@
   branch = "go1.9"
   name = "github.com/Microsoft/hcsshim"
   packages = ["."]
-  revision = "9c7257696926aa467bc22e0ccb9dd8adb603adc2"
+  revision = "1548d550a6af5c3ea12fe752b7c7c555ce02bf3d"
   source = "github.com/greenhouse-org/hcsshim"
 
 [[projects]]
@@ -89,6 +89,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "d091b2f818bcb4105d55c5fd5de7f357a31fc618af877304fde572037bef7fef"
+  inputs-digest = "da6ae27de127fb612bba304f4e2ed4582d16921a84872c0c123791756681a0ae"
   solver-name = "gps-cdcl"
   solver-version = 1
