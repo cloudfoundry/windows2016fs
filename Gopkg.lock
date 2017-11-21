@@ -17,7 +17,7 @@
   branch = "go1.9"
   name = "github.com/Microsoft/hcsshim"
   packages = ["."]
-  revision = "1548d550a6af5c3ea12fe752b7c7c555ce02bf3d"
+  revision = "0c09862b86725a460e5aa043ce98fac1919e03ff"
   source = "github.com/greenhouse-org/hcsshim"
 
 [[projects]]
