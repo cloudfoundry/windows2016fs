@@ -14,11 +14,10 @@
   version = "v0.4.5"
 
 [[projects]]
-  branch = "go1.9"
   name = "github.com/Microsoft/hcsshim"
   packages = ["."]
-  revision = "0c09862b86725a460e5aa043ce98fac1919e03ff"
-  source = "github.com/greenhouse-org/hcsshim"
+  revision = "34a629f78a5d50f7de07727e41a948685c45e026"
+  version = "v0.6.7"
 
 [[projects]]
   branch = "master"
