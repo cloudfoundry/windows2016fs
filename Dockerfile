@@ -22,3 +22,4 @@ COPY rewrite*.msi /Windows/rewrite.msi
 RUN msiexec /i C:\Windows\rewrite.msi /qn /quiet
 
 RUN powershell.exe -command "Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\dnscache' -Name Start -Value 4"
+RUN powershell.exe -command "Get-Service | Where-Object { $_.Name -eq 'dhcp' } | Set-Service -StartupType Disabled"
