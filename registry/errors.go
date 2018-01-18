@@ -16,12 +16,12 @@ func (e *SHAMismatchError) Error() string {
 }
 
 type DownloadError struct {
-	Cause    error
-	layerSHA string
+	Cause   error
+	blobSHA string
 }
 
 func (e *DownloadError) Error() string {
-	return fmt.Sprintf("failed downloading layer %.8s: %s", e.layerSHA, e.Cause.Error())
+	return fmt.Sprintf("failed downloading blob %.8s: %s", e.blobSHA, e.Cause.Error())
 }
 
 type DigestAlgorithmError struct {

@@ -3,11 +3,11 @@ package compress
 import (
 	"archive/tar"
 	"compress/gzip"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type Compressor struct{}
@@ -26,17 +26,17 @@ func (c *Compressor) WriteTgz(srcDir, outputFile string) error {
 	gzw := gzip.NewWriter(f)
 	defer gzw.Close()
 
-	return writeTar(srcDir, gzw)
+	tw := tar.NewWriter(gzw)
+	defer tw.Close()
+
+	return writeDirToTar(srcDir, tw, "")
 }
 
-func writeTar(srcDir string, dest io.Writer) error {
+func writeDirToTar(srcDir string, dest *tar.Writer, prefix string) error {
 	dir, err := filepath.Abs(srcDir)
 	if err != nil {
 		return err
 	}
-
-	tw := tar.NewWriter(dest)
-	defer tw.Close()
 
 	files, err := ioutil.ReadDir(srcDir)
 	if err != nil {
@@ -44,12 +44,17 @@ func writeTar(srcDir string, dest io.Writer) error {
 	}
 
 	for _, fi := range files {
-		if fi.IsDir() {
-			return &ErrInvalidSource{path: srcDir}
-		}
-		hdr := tarHeader(fi.Name(), fi.Size())
-		if err := addTarFile(filepath.Join(dir, fi.Name()), &hdr, tw); err != nil {
+		source := filepath.Join(dir, fi.Name())
+		hdr := tarHeader(fi, prefix)
+
+		if err := addTarFile(source, &hdr, dest); err != nil {
 			return err
+		}
+
+		if fi.IsDir() {
+			if err := writeDirToTar(source, dest, filepath.Join(prefix, fi.Name())); err != nil {
+				return err
+			}
 		}
 	}
 
@@ -57,11 +62,27 @@ func writeTar(srcDir string, dest io.Writer) error {
 }
 
 const c_ISREG = 0100000 // Regular file
-func tarHeader(filename string, size int64) tar.Header {
+const c_ISDIR = 040000  // Directory
+
+func tarHeader(fi os.FileInfo, prefix string) tar.Header {
+	filename := filepath.Join(prefix, fi.Name())
+
+	// use linux style path separators so tar headers are always identical
+	// tar on windows will handle these paths correctly
+	linuxFilename := strings.Replace(filename, "\\", "/", -1)
+
+	if fi.IsDir() {
+		return tar.Header{
+			Name:     linuxFilename + "/",
+			Mode:     0755 | c_ISDIR,
+			Typeflag: tar.TypeDir,
+		}
+	}
+
 	return tar.Header{
-		Name:     filename,
+		Name:     linuxFilename,
 		Mode:     0644 | c_ISREG,
-		Size:     size,
+		Size:     fi.Size(),
 		Typeflag: tar.TypeReg,
 	}
 }
@@ -71,6 +92,9 @@ func addTarFile(file string, hdr *tar.Header, tw *tar.Writer) error {
 		return err
 	}
 
+	if hdr.Typeflag != tar.TypeReg {
+		return nil
+	}
 	f, err := os.Open(file)
 	if err != nil {
 		return err
@@ -84,12 +108,4 @@ func addTarFile(file string, hdr *tar.Header, tw *tar.Writer) error {
 	}
 
 	return nil
-}
-
-type ErrInvalidSource struct {
-	path string
-}
-
-func (e *ErrInvalidSource) Error() string {
-	return fmt.Sprintf("source directory %s cannot contain sub directories", e.path)
 }

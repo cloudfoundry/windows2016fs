@@ -5,52 +5,74 @@ import (
 	"io"
 	"sync"
 
+	digest "github.com/opencontainers/go-digest"
 	"github.com/opencontainers/image-spec/specs-go/v1"
 )
 
 //go:generate counterfeiter . Registry
 type Registry interface {
-	DownloadManifest(string) (v1.Manifest, error)
+	Manifest() (v1.Manifest, error)
+	Config(v1.Descriptor) (v1.Image, error)
 	DownloadLayer(v1.Descriptor, string) error
-}
-
-//go:generate counterfeiter . Compressor
-type Compressor interface {
-	WriteTgz(string, string) error
 }
 
 type Downloader struct {
 	downloadDir string
-	outputTgz   string
 	registry    Registry
-	compressor  Compressor
 	logger      io.Writer
 }
 
-func New(downloadDir string, outputTgz string, registry Registry, compressor Compressor, logger io.Writer) *Downloader {
+func New(downloadDir string, registry Registry, logger io.Writer) *Downloader {
 	d := &Downloader{
 		downloadDir: downloadDir,
-		outputTgz:   outputTgz,
 		registry:    registry,
-		compressor:  compressor,
 		logger:      logger,
 	}
 	return d
 }
 
-func (d *Downloader) Run() error {
-	manifest, err := d.registry.DownloadManifest(d.downloadDir)
+func (d *Downloader) Run() ([]v1.Descriptor, []digest.Digest, error) {
+	registryManifest, err := d.registry.Manifest()
 	if err != nil {
-		return err
+		return nil, nil, err
 	}
 
-	totalLayers := len(manifest.Layers)
+	registryConfig, err := d.registry.Config(registryManifest.Config)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	if registryConfig.OS != "windows" {
+		return nil, nil, fmt.Errorf("invalid container OS: %s", registryConfig.OS)
+	}
+	if registryConfig.Architecture != "amd64" {
+		return nil, nil, fmt.Errorf("invalid container arch: %s", registryConfig.Architecture)
+	}
+
+	totalLayers := len(registryManifest.Layers)
+	diffIds := registryConfig.RootFS.DiffIDs
+
+	if totalLayers != len(diffIds) {
+		return nil, nil, fmt.Errorf("mismatch: %d layers, %d diffIds", totalLayers, len(diffIds))
+	}
+
 	fmt.Fprintf(d.logger, "Downloading %d layers...\n", totalLayers)
 	wg := sync.WaitGroup{}
 	errChan := make(chan error, 1)
 
-	for _, layer := range manifest.Layers {
+	downloadedLayers := []v1.Descriptor{}
+
+	for _, layer := range registryManifest.Layers {
 		l := layer
+
+		ociLayer := v1.Descriptor{
+			MediaType: v1.MediaTypeImageLayerGzip,
+			Size:      l.Size,
+			Digest:    l.Digest,
+		}
+
+		downloadedLayers = append(downloadedLayers, ociLayer)
+
 		wg.Add(1)
 		go func() {
 			fmt.Fprintf(d.logger, "Layer %.15s begin\n", l.Digest)
@@ -72,9 +94,8 @@ func (d *Downloader) Run() error {
 	select {
 	case <-wgEmpty:
 	case downloadErr := <-errChan:
-		return downloadErr
+		return nil, nil, downloadErr
 	}
 
-	fmt.Fprintf(d.logger, "\nAll layers downloaded, writing %s...\n", d.outputTgz)
-	return d.compressor.WriteTgz(d.downloadDir, d.outputTgz)
+	return downloadedLayers, diffIds, nil
 }

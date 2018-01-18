@@ -10,6 +10,7 @@ import (
 
 	"code.cloudfoundry.org/windows2016fs/compress"
 	"code.cloudfoundry.org/windows2016fs/downloader"
+	metadata "code.cloudfoundry.org/windows2016fs/oci-metadata"
 	"code.cloudfoundry.org/windows2016fs/registry"
 )
 
@@ -48,13 +49,31 @@ func (h *Hydrator) Run() error {
 	}
 	defer os.RemoveAll(tempDir)
 
-	r := registry.New("https://auth.docker.io", "https://registry.hub.docker.com", h.imageName, h.imageTag)
-	c := compress.New()
-	d := downloader.New(tempDir, outFile, r, c, os.Stdout)
-
-	if err := d.Run(); err != nil {
+	downloadDir := filepath.Join(tempDir, "blobs", "sha256")
+	if err := os.MkdirAll(downloadDir, 0755); err != nil {
 		return err
 	}
+
+	r := registry.New("https://auth.docker.io", "https://registry.hub.docker.com", h.imageName, h.imageTag)
+	d := downloader.New(downloadDir, r, os.Stdout)
+
+	layers, diffIds, err := d.Run()
+	if err != nil {
+		return err
+	}
+
+	m := metadata.New(tempDir, layers, diffIds)
+	if err := m.Write(); err != nil {
+		return err
+	}
+
+	fmt.Printf("\nAll layers downloaded, writing %s...\n", outFile)
+
+	c := compress.New()
+	if err := c.WriteTgz(tempDir, outFile); err != nil {
+		return err
+	}
+
 	fmt.Println("Done.")
 	return nil
 }

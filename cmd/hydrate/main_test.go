@@ -1,6 +1,7 @@
 package main_test
 
 import (
+	"compress/gzip"
 	"crypto/sha256"
 	"encoding/json"
 	"fmt"
@@ -15,6 +16,7 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gexec"
+	specs "github.com/opencontainers/image-spec/specs-go"
 	"github.com/opencontainers/image-spec/specs-go/v1"
 )
 
@@ -25,11 +27,15 @@ var _ = Describe("Hydrate", func() {
 		imageName        string
 		imageTag         string
 		imageTarballName string
+		imageContentsDir string
 	)
 
 	BeforeEach(func() {
 		var err error
 		outputDir, err = ioutil.TempDir("", "hydrateOutput")
+		Expect(err).NotTo(HaveOccurred())
+
+		imageContentsDir, err = ioutil.TempDir("", "image-contents")
 		Expect(err).NotTo(HaveOccurred())
 
 		imageName = "pivotalgreenhouse/windows2016fs-hydrate"
@@ -43,6 +49,7 @@ var _ = Describe("Hydrate", func() {
 
 	AfterEach(func() {
 		Expect(os.RemoveAll(outputDir)).To(Succeed())
+		Expect(os.RemoveAll(imageContentsDir)).To(Succeed())
 	})
 
 	Context("when provided an output directory", func() {
@@ -51,27 +58,43 @@ var _ = Describe("Hydrate", func() {
 				hydrateArgs = []string{"--outputDir", outputDir, "--image", imageName, "--tag", imageTag}
 			})
 
-			It("downloads the correct version of the image", func() {
+			It("creates a valid oci-layout file", func() {
 				hydrateSess := runHydrate(hydrateArgs)
 				Eventually(hydrateSess).Should(gexec.Exit(0))
 
 				tarball := filepath.Join(outputDir, imageTarballName)
+				extractTarball(tarball, imageContentsDir)
 
-				imageContentsDir := extractTarball(tarball)
-				defer os.RemoveAll(imageContentsDir)
+				ociLayoutFile := filepath.Join(imageContentsDir, "oci-layout")
 
-				manifestFile := filepath.Join(imageContentsDir, "manifest.json")
-				Expect(manifestFile).To(BeAnExistingFile())
-
-				var im v1.Manifest
-				content, err := ioutil.ReadFile(manifestFile)
+				var il v1.ImageLayout
+				content, err := ioutil.ReadFile(ociLayoutFile)
 				Expect(err).NotTo(HaveOccurred())
-				Expect(json.Unmarshal(content, &im)).To(Succeed())
+				Expect(json.Unmarshal(content, &il)).To(Succeed())
+				Expect(il.Version).To(Equal(specs.Version))
+			})
 
-				for _, layer := range im.Layers {
-					layerSHA := strings.TrimPrefix(string(layer.Digest), "sha256:")
-					blob := filepath.Join(imageContentsDir, layerSHA)
-					Expect(sha256Sum(blob)).To(Equal(layerSHA))
+			It("downloads all the layers with the required metadata files", func() {
+				hydrateSess := runHydrate(hydrateArgs)
+				Eventually(hydrateSess).Should(gexec.Exit(0))
+
+				tarball := filepath.Join(outputDir, imageTarballName)
+				extractTarball(tarball, imageContentsDir)
+
+				im := loadManifest(imageContentsDir)
+				ic := loadConfig(imageContentsDir)
+
+				for i, layer := range im.Layers {
+					Expect(layer.MediaType).To(Equal(v1.MediaTypeImageLayerGzip))
+
+					layerFile := filename(imageContentsDir, layer)
+					fi, err := os.Stat(layerFile)
+					Expect(err).NotTo(HaveOccurred())
+					Expect(fi.Size()).To(Equal(layer.Size))
+
+					Expect(sha256Sum(layerFile)).To(Equal(layer.Digest.Encoded()))
+
+					Expect(diffID(layerFile)).To(Equal(ic.RootFS.DiffIDs[i].Encoded()))
 				}
 			})
 
@@ -105,22 +128,23 @@ var _ = Describe("Hydrate", func() {
 					Eventually(hydrateSess).Should(gexec.Exit(0))
 
 					tarball := filepath.Join(outputDir, imageTarballName)
+					extractTarball(tarball, imageContentsDir)
 
-					imageContentsDir := extractTarball(tarball)
-					defer os.RemoveAll(imageContentsDir)
+					im := loadManifest(imageContentsDir)
+					ic := loadConfig(imageContentsDir)
 
-					manifestFile := filepath.Join(imageContentsDir, "manifest.json")
-					Expect(manifestFile).To(BeAnExistingFile())
+					for i, layer := range im.Layers {
+						Expect(layer.MediaType).To(Equal(v1.MediaTypeImageLayerGzip))
 
-					var im v1.Manifest
-					content, err := ioutil.ReadFile(manifestFile)
-					Expect(err).NotTo(HaveOccurred())
-					Expect(json.Unmarshal(content, &im)).To(Succeed())
+						layerFile := filename(imageContentsDir, layer)
+						fi, err := os.Stat(layerFile)
+						Expect(err).NotTo(HaveOccurred())
+						Expect(fi.Size()).To(Equal(layer.Size))
 
-					for _, layer := range im.Layers {
-						layerSHA := strings.TrimPrefix(string(layer.Digest), "sha256:")
-						blob := filepath.Join(imageContentsDir, layerSHA)
-						Expect(sha256Sum(blob)).To(Equal(layerSHA))
+						Expect(sha256Sum(layerFile)).To(Equal(layer.Digest.Encoded()))
+
+						Expect(layer.MediaType).To(Equal(v1.MediaTypeImageLayerGzip))
+						Expect(diffID(layerFile)).To(Equal(ic.RootFS.DiffIDs[i].Encoded()))
 					}
 				})
 			})
@@ -170,12 +194,9 @@ var _ = Describe("Hydrate", func() {
 	})
 })
 
-func extractTarball(path string) string {
-	tmpDir, err := ioutil.TempDir("", "hydrated")
-	Expect(err).NotTo(HaveOccurred())
-	err = extractor.NewTgz().Extract(path, tmpDir)
+func extractTarball(path string, outputDir string) {
+	err := extractor.NewTgz().Extract(path, outputDir)
 	ExpectWithOffset(1, err).NotTo(HaveOccurred())
-	return tmpDir
 }
 
 func sha256Sum(file string) string {
@@ -188,6 +209,57 @@ func sha256Sum(file string) string {
 	_, err = io.Copy(h, f)
 	Expect(err).NotTo(HaveOccurred())
 	return fmt.Sprintf("%x", h.Sum(nil))
+}
+
+func diffID(file string) string {
+	Expect(file).To(BeAnExistingFile())
+	f, err := os.Open(file)
+	Expect(err).NotTo(HaveOccurred())
+	defer f.Close()
+
+	gz, err := gzip.NewReader(f)
+	Expect(err).NotTo(HaveOccurred())
+	defer gz.Close()
+
+	h := sha256.New()
+	_, err = io.Copy(h, gz)
+	Expect(err).NotTo(HaveOccurred())
+	return fmt.Sprintf("%x", h.Sum(nil))
+}
+
+func filename(dir string, desc v1.Descriptor) string {
+	return filepath.Join(dir, "blobs", desc.Digest.Algorithm().String(), desc.Digest.Encoded())
+}
+
+func loadIndex(outDir string) v1.Index {
+	var ii v1.Index
+	content, err := ioutil.ReadFile(filepath.Join(outDir, "index.json"))
+	Expect(err).NotTo(HaveOccurred())
+	Expect(json.Unmarshal(content, &ii)).To(Succeed())
+
+	return ii
+}
+
+func loadManifest(outDir string) v1.Manifest {
+	ii := loadIndex(outDir)
+
+	content, err := ioutil.ReadFile(filename(outDir, ii.Manifests[0]))
+	Expect(err).NotTo(HaveOccurred())
+
+	var im v1.Manifest
+	Expect(json.Unmarshal(content, &im)).To(Succeed())
+	return im
+}
+
+func loadConfig(outDir string) v1.Image {
+	im := loadManifest(outDir)
+
+	content, err := ioutil.ReadFile(filename(outDir, im.Config))
+	Expect(err).NotTo(HaveOccurred())
+
+	var ic v1.Image
+	Expect(json.Unmarshal(content, &ic)).To(Succeed())
+	return ic
 }
 
 func runHydrate(args []string) *gexec.Session {

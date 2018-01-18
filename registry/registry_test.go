@@ -46,7 +46,7 @@ var _ = Describe("Registry", func() {
 		Expect(os.RemoveAll(outputDir)).To(Succeed())
 	})
 
-	Describe("DownloadManifest", func() {
+	Describe("Manifest", func() {
 		Context("successful download", func() {
 			BeforeEach(func() {
 				authServer.AppendHandlers(
@@ -68,16 +68,10 @@ var _ = Describe("Registry", func() {
 				)
 			})
 
-			It("downloads a manifest for the given image and ref", func() {
-				actualManifest, err := r.DownloadManifest(outputDir)
+			It("returns a manifest for the given image and ref", func() {
+				actualManifest, err := r.Manifest()
 				Expect(err).NotTo(HaveOccurred())
 				Expect(actualManifest).To(Equal(manifest))
-
-				data, err := ioutil.ReadFile(filepath.Join(outputDir, "manifest.json"))
-				Expect(err).To(Succeed())
-				var diskManifest v1.Manifest
-				Expect(json.Unmarshal(data, &diskManifest)).To(Succeed())
-				Expect(actualManifest).To(Equal(diskManifest))
 			})
 		})
 
@@ -98,7 +92,7 @@ var _ = Describe("Registry", func() {
 			})
 
 			It("returns an error", func() {
-				_, err := r.DownloadManifest(outputDir)
+				_, err := r.Manifest()
 				Expect(err).To(BeAssignableToTypeOf(&registry.HTTPNotOKError{}))
 			})
 		})
@@ -114,7 +108,7 @@ var _ = Describe("Registry", func() {
 			})
 
 			It("returns an error", func() {
-				_, err := r.DownloadManifest(outputDir)
+				_, err := r.Manifest()
 				Expect(err).To(BeAssignableToTypeOf(&registry.HTTPNotOKError{}))
 			})
 		})
@@ -318,6 +312,162 @@ var _ = Describe("Registry", func() {
 
 			It("returns an error", func() {
 				err := r.DownloadLayer(layer, outputDir)
+				Expect(err).To(BeAssignableToTypeOf(&registry.DownloadError{}))
+				Expect(err.(*registry.DownloadError).Cause).To(BeAssignableToTypeOf(&registry.InvalidMediaTypeError{}))
+			})
+		})
+	})
+
+	Describe("Config", func() {
+		var (
+			config     v1.Descriptor
+			configData = `{"os":"some-os","architecture":"some-arch"}`
+			configLen  = int64(len(configData))
+			configSHA  = "578ede1ce55a039ccad3151fe2cd96b332c389503416666cc78ab48d3803b2a4"
+		)
+
+		BeforeEach(func() {
+			config = v1.Descriptor{
+				Digest:    digest.NewDigestFromEncoded("sha256", configSHA),
+				MediaType: "application/vnd.docker.container.image.v1+json",
+				Size:      configLen,
+			}
+		})
+
+		Context("a successful request", func() {
+			BeforeEach(func() {
+				authServer.AppendHandlers(
+					ghttp.CombineHandlers(
+						ghttp.VerifyRequest("GET", "/token", fmt.Sprintf("service=registry.docker.io&scope=repository:%s:pull", imageName)),
+						ghttp.RespondWith(http.StatusOK, fmt.Sprintf(`{"token": "%s"}`, token)),
+					),
+				)
+
+				registryServer.AppendHandlers(
+					ghttp.CombineHandlers(
+						ghttp.VerifyRequest("GET", fmt.Sprintf("/v2/%s/blobs/%s", imageName, config.Digest), ""),
+						ghttp.VerifyHeader(http.Header{"Authorization": []string{"Bearer " + token}}),
+						ghttp.RespondWith(http.StatusOK, []byte(configData)),
+					),
+				)
+			})
+
+			It("returns the config object for the given descriptor", func() {
+				c, err := r.Config(config)
+				Expect(err).NotTo(HaveOccurred())
+
+				Expect(c.Architecture).To(Equal("some-arch"))
+				Expect(c.OS).To(Equal("some-os"))
+			})
+		})
+
+		Context("the auth server returns a non-200 response", func() {
+			BeforeEach(func() {
+				authServer.AppendHandlers(
+					ghttp.CombineHandlers(
+						ghttp.VerifyRequest("GET", "/token", fmt.Sprintf("service=registry.docker.io&scope=repository:%s:pull", imageName)),
+						ghttp.RespondWith(http.StatusNotFound, nil),
+					),
+				)
+			})
+
+			It("returns an error", func() {
+				_, err := r.Config(config)
+				Expect(err).To(BeAssignableToTypeOf(&registry.DownloadError{}))
+				Expect(err.(*registry.DownloadError).Cause).To(BeAssignableToTypeOf(&registry.HTTPNotOKError{}))
+			})
+		})
+
+		Context("the sha256 does not match", func() {
+			BeforeEach(func() {
+				authServer.AppendHandlers(
+					ghttp.CombineHandlers(
+						ghttp.VerifyRequest("GET", "/token", fmt.Sprintf("service=registry.docker.io&scope=repository:%s:pull", imageName)),
+						ghttp.RespondWith(http.StatusOK, fmt.Sprintf(`{"token": "%s"}`, token)),
+					),
+				)
+
+				registryServer.AppendHandlers(
+					ghttp.CombineHandlers(
+						ghttp.VerifyRequest("GET", fmt.Sprintf("/v2/%s/blobs/%s", imageName, config.Digest), ""),
+						ghttp.VerifyHeader(http.Header{"Authorization": []string{"Bearer " + token}}),
+						ghttp.RespondWith(http.StatusOK, []byte("some-different-data")),
+					),
+				)
+			})
+
+			It("returns an error", func() {
+				_, err := r.Config(config)
+				Expect(err).To(BeAssignableToTypeOf(&registry.DownloadError{}))
+				Expect(err.(*registry.DownloadError).Cause).To(BeAssignableToTypeOf(&registry.SHAMismatchError{}))
+			})
+		})
+
+		Context("the digest algorithm is not sha256", func() {
+			BeforeEach(func() {
+				config = v1.Descriptor{
+					MediaType: "application/vnd.docker.container.image.v1+json",
+					Digest:    digest.NewDigestFromEncoded(digest.SHA384, strings.Repeat("a", 96)),
+				}
+			})
+
+			It("returns an error", func() {
+				_, err := r.Config(config)
+				Expect(err).To(BeAssignableToTypeOf(&registry.DownloadError{}))
+				Expect(err.(*registry.DownloadError).Cause).To(BeAssignableToTypeOf(&registry.DigestAlgorithmError{}))
+			})
+		})
+
+		Context("the digest is incorrectly formatted", func() {
+			BeforeEach(func() {
+				config = v1.Descriptor{
+					MediaType: "application/vnd.docker.container.image.v1+json",
+					Digest:    digest.Digest("not-a-digest"),
+				}
+			})
+
+			It("returns an error", func() {
+				_, err := r.Config(config)
+				Expect(err).To(BeAssignableToTypeOf(&registry.DownloadError{}))
+				Expect(err.(*registry.DownloadError).Cause.Error()).To(Equal("invalid checksum digest format"))
+			})
+		})
+
+		Context("the registry server returns a non-200 response", func() {
+			BeforeEach(func() {
+				authServer.AppendHandlers(
+					ghttp.CombineHandlers(
+						ghttp.VerifyRequest("GET", "/token", fmt.Sprintf("service=registry.docker.io&scope=repository:%s:pull", imageName)),
+						ghttp.RespondWith(http.StatusOK, fmt.Sprintf(`{"token": "%s"}`, token)),
+					),
+				)
+
+				registryServer.AppendHandlers(
+					ghttp.CombineHandlers(
+						ghttp.VerifyRequest("GET", fmt.Sprintf("/v2/%s/blobs/%s", imageName, config.Digest), ""),
+						ghttp.VerifyHeader(http.Header{"Authorization": []string{"Bearer " + token}}),
+						ghttp.RespondWith(http.StatusNotFound, nil),
+					),
+				)
+			})
+
+			It("returns an error", func() {
+				_, err := r.Config(config)
+				Expect(err).To(BeAssignableToTypeOf(&registry.DownloadError{}))
+				Expect(err.(*registry.DownloadError).Cause).To(BeAssignableToTypeOf(&registry.HTTPNotOKError{}))
+			})
+		})
+
+		Context("the media type is invalid", func() {
+			BeforeEach(func() {
+				config = v1.Descriptor{
+					Digest:    digest.NewDigestFromEncoded("sha256", configSHA),
+					MediaType: "some-invalid-media-type",
+				}
+			})
+
+			It("returns an error", func() {
+				_, err := r.Config(config)
 				Expect(err).To(BeAssignableToTypeOf(&registry.DownloadError{}))
 				Expect(err.(*registry.DownloadError).Cause).To(BeAssignableToTypeOf(&registry.InvalidMediaTypeError{}))
 			})

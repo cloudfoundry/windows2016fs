@@ -24,6 +24,7 @@ const (
 const (
 	foreignLayer   = "application/vnd.docker.image.rootfs.foreign.diff.tar.gzip"
 	diffLayer      = "application/vnd.docker.image.rootfs.diff.tar.gzip"
+	imageConfig    = "application/vnd.docker.container.image.v1+json"
 	manifestV2     = "application/vnd.docker.distribution.manifest.v2+json"
 	manifestV2List = "application/vnd.docker.distribution.manifest.list.v2+json"
 )
@@ -44,17 +45,11 @@ func New(authServerURL, registryServerURL, imageName, imageTag string) *Registry
 	}
 }
 
-func (r *Registry) DownloadManifest(outputDir string) (v1.Manifest, error) {
+func (r *Registry) Manifest() (v1.Manifest, error) {
 	var m v1.Manifest
 	buffer := new(bytes.Buffer)
-	manifestFile := filepath.Join(outputDir, "manifest.json")
-	f, err := os.OpenFile(manifestFile, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
-	if err != nil {
-		return v1.Manifest{}, err
-	}
-	defer f.Close()
 
-	if err := r.downloadResource(r.manifestURL(), io.MultiWriter(buffer, f), manifestV2, manifestV2List); err != nil {
+	if err := r.downloadResource(r.manifestURL(), buffer, manifestV2, manifestV2List); err != nil {
 		return v1.Manifest{}, err
 	}
 
@@ -65,19 +60,48 @@ func (r *Registry) DownloadManifest(outputDir string) (v1.Manifest, error) {
 	return m, nil
 }
 
+func (r *Registry) Config(config v1.Descriptor) (v1.Image, error) {
+	configSHA, err := getLayerSHA(config.Digest)
+	if err != nil {
+		return v1.Image{}, &DownloadError{Cause: err, blobSHA: configSHA}
+	}
+
+	if config.MediaType != imageConfig {
+		return v1.Image{}, &DownloadError{Cause: &InvalidMediaTypeError{mediaType: config.MediaType}, blobSHA: configSHA}
+	}
+
+	buffer := new(bytes.Buffer)
+
+	if err := r.downloadResource(r.blobURL(config.Digest), buffer); err != nil {
+		return v1.Image{}, &DownloadError{Cause: err, blobSHA: configSHA}
+	}
+
+	recievedSHA := fmt.Sprintf("%x", sha256.Sum256(buffer.Bytes()))
+	if configSHA != recievedSHA {
+		return v1.Image{}, &DownloadError{Cause: &SHAMismatchError{expected: configSHA, actual: recievedSHA}, blobSHA: configSHA}
+	}
+
+	var i v1.Image
+	if err := json.Unmarshal(buffer.Bytes(), &i); err != nil {
+		return v1.Image{}, err
+	}
+
+	return i, nil
+}
+
 func (r *Registry) DownloadLayer(layer v1.Descriptor, outputDir string) error {
 	layerSHA, err := getLayerSHA(layer.Digest)
 	if err != nil {
-		return &DownloadError{Cause: err, layerSHA: layerSHA}
+		return &DownloadError{Cause: err, blobSHA: layerSHA}
 	}
 
 	layerFile := filepath.Join(outputDir, layerSHA)
 	if err := r.downloadLayer(layer, layerFile); err != nil {
-		return &DownloadError{Cause: err, layerSHA: layerSHA}
+		return &DownloadError{Cause: err, blobSHA: layerSHA}
 	}
 
 	if err := checkSHA256(layerFile, layerSHA); err != nil {
-		return &DownloadError{Cause: err, layerSHA: layerSHA}
+		return &DownloadError{Cause: err, blobSHA: layerSHA}
 	}
 	return nil
 }
@@ -87,7 +111,7 @@ func (r *Registry) downloadLayer(layer v1.Descriptor, outputFile string) error {
 
 	switch layer.MediaType {
 	case diffLayer:
-		layerURL = r.layerURL(layer.Digest)
+		layerURL = r.blobURL(layer.Digest)
 	case foreignLayer:
 		layerURL = layer.URLs[0]
 	default:
@@ -110,8 +134,8 @@ func (r *Registry) manifestURL() string {
 	return fmt.Sprintf(manifestURL, r.registryServerURL, r.imageName, r.imageTag)
 }
 
-func (r *Registry) layerURL(layerDigest digest.Digest) string {
-	return fmt.Sprintf(blobURL, r.registryServerURL, r.imageName, layerDigest)
+func (r *Registry) blobURL(d digest.Digest) string {
+	return fmt.Sprintf(blobURL, r.registryServerURL, r.imageName, d)
 }
 
 func (r *Registry) downloadResource(url string, output io.Writer, acceptMediaTypes ...string) error {

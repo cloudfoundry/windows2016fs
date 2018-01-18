@@ -9,17 +9,28 @@ import (
 )
 
 type FakeRegistry struct {
-	DownloadManifestStub        func(string) (v1.Manifest, error)
-	downloadManifestMutex       sync.RWMutex
-	downloadManifestArgsForCall []struct {
-		arg1 string
-	}
-	downloadManifestReturns struct {
+	ManifestStub        func() (v1.Manifest, error)
+	manifestMutex       sync.RWMutex
+	manifestArgsForCall []struct{}
+	manifestReturns     struct {
 		result1 v1.Manifest
 		result2 error
 	}
-	downloadManifestReturnsOnCall map[int]struct {
+	manifestReturnsOnCall map[int]struct {
 		result1 v1.Manifest
+		result2 error
+	}
+	ConfigStub        func(v1.Descriptor) (v1.Image, error)
+	configMutex       sync.RWMutex
+	configArgsForCall []struct {
+		arg1 v1.Descriptor
+	}
+	configReturns struct {
+		result1 v1.Image
+		result2 error
+	}
+	configReturnsOnCall map[int]struct {
+		result1 v1.Image
 		result2 error
 	}
 	DownloadLayerStub        func(v1.Descriptor, string) error
@@ -38,53 +49,96 @@ type FakeRegistry struct {
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeRegistry) DownloadManifest(arg1 string) (v1.Manifest, error) {
-	fake.downloadManifestMutex.Lock()
-	ret, specificReturn := fake.downloadManifestReturnsOnCall[len(fake.downloadManifestArgsForCall)]
-	fake.downloadManifestArgsForCall = append(fake.downloadManifestArgsForCall, struct {
-		arg1 string
-	}{arg1})
-	fake.recordInvocation("DownloadManifest", []interface{}{arg1})
-	fake.downloadManifestMutex.Unlock()
-	if fake.DownloadManifestStub != nil {
-		return fake.DownloadManifestStub(arg1)
+func (fake *FakeRegistry) Manifest() (v1.Manifest, error) {
+	fake.manifestMutex.Lock()
+	ret, specificReturn := fake.manifestReturnsOnCall[len(fake.manifestArgsForCall)]
+	fake.manifestArgsForCall = append(fake.manifestArgsForCall, struct{}{})
+	fake.recordInvocation("Manifest", []interface{}{})
+	fake.manifestMutex.Unlock()
+	if fake.ManifestStub != nil {
+		return fake.ManifestStub()
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	return fake.downloadManifestReturns.result1, fake.downloadManifestReturns.result2
+	return fake.manifestReturns.result1, fake.manifestReturns.result2
 }
 
-func (fake *FakeRegistry) DownloadManifestCallCount() int {
-	fake.downloadManifestMutex.RLock()
-	defer fake.downloadManifestMutex.RUnlock()
-	return len(fake.downloadManifestArgsForCall)
+func (fake *FakeRegistry) ManifestCallCount() int {
+	fake.manifestMutex.RLock()
+	defer fake.manifestMutex.RUnlock()
+	return len(fake.manifestArgsForCall)
 }
 
-func (fake *FakeRegistry) DownloadManifestArgsForCall(i int) string {
-	fake.downloadManifestMutex.RLock()
-	defer fake.downloadManifestMutex.RUnlock()
-	return fake.downloadManifestArgsForCall[i].arg1
-}
-
-func (fake *FakeRegistry) DownloadManifestReturns(result1 v1.Manifest, result2 error) {
-	fake.DownloadManifestStub = nil
-	fake.downloadManifestReturns = struct {
+func (fake *FakeRegistry) ManifestReturns(result1 v1.Manifest, result2 error) {
+	fake.ManifestStub = nil
+	fake.manifestReturns = struct {
 		result1 v1.Manifest
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *FakeRegistry) DownloadManifestReturnsOnCall(i int, result1 v1.Manifest, result2 error) {
-	fake.DownloadManifestStub = nil
-	if fake.downloadManifestReturnsOnCall == nil {
-		fake.downloadManifestReturnsOnCall = make(map[int]struct {
+func (fake *FakeRegistry) ManifestReturnsOnCall(i int, result1 v1.Manifest, result2 error) {
+	fake.ManifestStub = nil
+	if fake.manifestReturnsOnCall == nil {
+		fake.manifestReturnsOnCall = make(map[int]struct {
 			result1 v1.Manifest
 			result2 error
 		})
 	}
-	fake.downloadManifestReturnsOnCall[i] = struct {
+	fake.manifestReturnsOnCall[i] = struct {
 		result1 v1.Manifest
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeRegistry) Config(arg1 v1.Descriptor) (v1.Image, error) {
+	fake.configMutex.Lock()
+	ret, specificReturn := fake.configReturnsOnCall[len(fake.configArgsForCall)]
+	fake.configArgsForCall = append(fake.configArgsForCall, struct {
+		arg1 v1.Descriptor
+	}{arg1})
+	fake.recordInvocation("Config", []interface{}{arg1})
+	fake.configMutex.Unlock()
+	if fake.ConfigStub != nil {
+		return fake.ConfigStub(arg1)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fake.configReturns.result1, fake.configReturns.result2
+}
+
+func (fake *FakeRegistry) ConfigCallCount() int {
+	fake.configMutex.RLock()
+	defer fake.configMutex.RUnlock()
+	return len(fake.configArgsForCall)
+}
+
+func (fake *FakeRegistry) ConfigArgsForCall(i int) v1.Descriptor {
+	fake.configMutex.RLock()
+	defer fake.configMutex.RUnlock()
+	return fake.configArgsForCall[i].arg1
+}
+
+func (fake *FakeRegistry) ConfigReturns(result1 v1.Image, result2 error) {
+	fake.ConfigStub = nil
+	fake.configReturns = struct {
+		result1 v1.Image
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeRegistry) ConfigReturnsOnCall(i int, result1 v1.Image, result2 error) {
+	fake.ConfigStub = nil
+	if fake.configReturnsOnCall == nil {
+		fake.configReturnsOnCall = make(map[int]struct {
+			result1 v1.Image
+			result2 error
+		})
+	}
+	fake.configReturnsOnCall[i] = struct {
+		result1 v1.Image
 		result2 error
 	}{result1, result2}
 }
@@ -141,8 +195,10 @@ func (fake *FakeRegistry) DownloadLayerReturnsOnCall(i int, result1 error) {
 func (fake *FakeRegistry) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
-	fake.downloadManifestMutex.RLock()
-	defer fake.downloadManifestMutex.RUnlock()
+	fake.manifestMutex.RLock()
+	defer fake.manifestMutex.RUnlock()
+	fake.configMutex.RLock()
+	defer fake.configMutex.RUnlock()
 	fake.downloadLayerMutex.RLock()
 	defer fake.downloadLayerMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}

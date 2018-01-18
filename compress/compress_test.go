@@ -25,7 +25,7 @@ var _ = Describe("Compress", func() {
 			outputFile string
 		)
 
-		const outputTarSha = "5ba93d2385fc2e96b9c30757ec3a9040bc33d3ebe939e614724c18bf646400db"
+		const outputTarSha = "e96a891c69c40717b7f015a53fd7d4455af705a4a935126aa7df16134b8698dd"
 
 		BeforeEach(func() {
 			var err error
@@ -41,6 +41,14 @@ var _ = Describe("Compress", func() {
 			Expect(ioutil.WriteFile(filepath.Join(srcDir, "file2"), []byte("contents2"), 0644)).To(Succeed())
 			Expect(ioutil.WriteFile(filepath.Join(srcDir, "file3"), []byte("contents3"), 0644)).To(Succeed())
 
+			subDir1 := filepath.Join(srcDir, "blobs", "sha1")
+			Expect(os.MkdirAll(subDir1, 0755)).To(Succeed())
+			Expect(ioutil.WriteFile(filepath.Join(subDir1, "file4"), []byte("contents4"), 0644)).To(Succeed())
+
+			subDir2 := filepath.Join(srcDir, "blobs", "md5")
+			Expect(os.MkdirAll(subDir2, 0755)).To(Succeed())
+			Expect(ioutil.WriteFile(filepath.Join(subDir2, "file5"), []byte("contents5"), 0644)).To(Succeed())
+
 			c = compress.New()
 		})
 
@@ -49,7 +57,7 @@ var _ = Describe("Compress", func() {
 			Expect(os.RemoveAll(outputDir)).To(Succeed())
 		})
 
-		It("creates a .tgz file with all of the layers + the manifest.json", func() {
+		It("creates a .tgz file with all of the files, including sub directories", func() {
 			Expect(c.WriteTgz(srcDir, outputFile)).To(Succeed())
 
 			contents := extractTarball(outputFile)
@@ -67,18 +75,15 @@ var _ = Describe("Compress", func() {
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(data)).To(Equal("contents3"))
 
+			data, err = ioutil.ReadFile(filepath.Join(contents, "blobs", "sha1", "file4"))
+			Expect(err).NotTo(HaveOccurred())
+			Expect(string(data)).To(Equal("contents4"))
+
+			data, err = ioutil.ReadFile(filepath.Join(contents, "blobs", "md5", "file5"))
+			Expect(err).NotTo(HaveOccurred())
+			Expect(string(data)).To(Equal("contents5"))
+
 			ItHasTheCorrectSHA256(outputFile, outputTarSha)
-		})
-
-		Context("the source dir contains a sub directory", func() {
-			BeforeEach(func() {
-				Expect(os.MkdirAll(filepath.Join(srcDir, "sub-dir"), 0755)).To(Succeed())
-			})
-
-			It("returns an error", func() {
-				err := c.WriteTgz(srcDir, outputFile)
-				Expect(err).To(BeAssignableToTypeOf(&compress.ErrInvalidSource{}))
-			})
 		})
 	})
 })
