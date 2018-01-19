@@ -13,39 +13,39 @@ import (
 	"github.com/opencontainers/image-spec/specs-go/v1"
 )
 
-type Metadata struct {
+type Writer struct {
 	outDir  string
 	layers  []v1.Descriptor
 	diffIds []digest.Digest
 }
 
-func New(outDir string, layers []v1.Descriptor, diffIds []digest.Digest) *Metadata {
-	return &Metadata{
+func NewWriter(outDir string, layers []v1.Descriptor, diffIds []digest.Digest) *Writer {
+	return &Writer{
 		outDir:  outDir,
 		layers:  layers,
 		diffIds: diffIds,
 	}
 }
 
-func (m *Metadata) Write() error {
-	if err := m.writeOCILayout(); err != nil {
+func (w *Writer) Write() error {
+	if err := w.writeOCILayout(); err != nil {
 		return err
 	}
 
-	configDescriptor, err := m.writeConfig()
+	configDescriptor, err := w.writeConfig()
 	if err != nil {
 		return err
 	}
 
-	manifestDescriptor, err := m.writeManifest(configDescriptor)
+	manifestDescriptor, err := w.writeManifest(configDescriptor)
 	if err != nil {
 		return err
 	}
 
-	return m.writeIndexJson(manifestDescriptor)
+	return w.writeIndexJson(manifestDescriptor)
 }
 
-func (m *Metadata) writeOCILayout() error {
+func (w *Writer) writeOCILayout() error {
 	il := v1.ImageLayout{
 		Version: specs.Version,
 	}
@@ -54,17 +54,17 @@ func (m *Metadata) writeOCILayout() error {
 		return err
 	}
 
-	return ioutil.WriteFile(filepath.Join(m.outDir, "oci-layout"), data, 0644)
+	return ioutil.WriteFile(filepath.Join(w.outDir, "oci-layout"), data, 0644)
 }
 
-func (m *Metadata) writeConfig() (v1.Descriptor, error) {
+func (w *Writer) writeConfig() (v1.Descriptor, error) {
 	ic := v1.Image{
 		Architecture: "amd64",
 		OS:           "windows",
-		RootFS:       v1.RootFS{Type: "layers", DiffIDs: m.diffIds},
+		RootFS:       v1.RootFS{Type: "layers", DiffIDs: w.diffIds},
 	}
 
-	d, err := m.writeBlob(ic)
+	d, err := w.writeBlob(ic)
 	if err != nil {
 		return v1.Descriptor{}, err
 	}
@@ -73,14 +73,14 @@ func (m *Metadata) writeConfig() (v1.Descriptor, error) {
 	return d, nil
 }
 
-func (m *Metadata) writeManifest(config v1.Descriptor) (v1.Descriptor, error) {
+func (w *Writer) writeManifest(config v1.Descriptor) (v1.Descriptor, error) {
 	im := v1.Manifest{
 		Versioned: specs.Versioned{SchemaVersion: 2},
 		Config:    config,
-		Layers:    m.layers,
+		Layers:    w.layers,
 	}
 
-	d, err := m.writeBlob(im)
+	d, err := w.writeBlob(im)
 	if err != nil {
 		return v1.Descriptor{}, err
 	}
@@ -90,7 +90,7 @@ func (m *Metadata) writeManifest(config v1.Descriptor) (v1.Descriptor, error) {
 	return d, nil
 }
 
-func (m *Metadata) writeBlob(blob interface{}) (v1.Descriptor, error) {
+func (w *Writer) writeBlob(blob interface{}) (v1.Descriptor, error) {
 	data, err := json.Marshal(blob)
 	if err != nil {
 		return v1.Descriptor{}, err
@@ -98,7 +98,7 @@ func (m *Metadata) writeBlob(blob interface{}) (v1.Descriptor, error) {
 
 	blobSha := fmt.Sprintf("%x", sha256.Sum256(data))
 
-	blobsDir := filepath.Join(m.outDir, "blobs", "sha256")
+	blobsDir := filepath.Join(w.outDir, "blobs", "sha256")
 	if err := os.MkdirAll(blobsDir, 0755); err != nil {
 		return v1.Descriptor{}, err
 	}
@@ -113,7 +113,7 @@ func (m *Metadata) writeBlob(blob interface{}) (v1.Descriptor, error) {
 	}, nil
 }
 
-func (m *Metadata) writeIndexJson(manifest v1.Descriptor) error {
+func (w *Writer) writeIndexJson(manifest v1.Descriptor) error {
 	ii := v1.Index{
 		Versioned: specs.Versioned{SchemaVersion: 2},
 		Manifests: []v1.Descriptor{manifest},
@@ -124,5 +124,5 @@ func (m *Metadata) writeIndexJson(manifest v1.Descriptor) error {
 		return err
 	}
 
-	return ioutil.WriteFile(filepath.Join(m.outDir, "index.json"), data, 0644)
+	return ioutil.WriteFile(filepath.Join(w.outDir, "index.json"), data, 0644)
 }

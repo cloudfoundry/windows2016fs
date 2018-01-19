@@ -21,10 +21,10 @@ var _ = Describe("Extract", func() {
 		extractArgs []string
 
 		imageLayers = []string{
-			"bb09eb0ec8384b31c735f4d5be5877cd85464c6202b718633ef5ea8299caad86",
-			"c5626ce5a7415723bc0fc31bc6b61240b1a1dc0fdbd2757b01ed6141a1ec1a56",
-			"ad09b0550b6c41c96a80f476f16b2ad5160d9c10545a05a73b8eece84b5d9d49",
-			"407ada6e90de9752a53cb9f52b7947a0e38a9b21a349970ace15c68890d72511",
+			"67903cf26ef4095868687002e3dc6f78ad275677704bf0d11524f16209cec48e",
+			"87f40e4c0087014df9322d0d046879e0acc6583d30d8aff4def445c11ec74cd1",
+			"3c19ca70b62d5c7afc6bfb79e2203b467c1f831a51e1be87b4916d8cb593034a",
+			"6b48ca8a17606fc0074fce44e4bc9a69e640a9a68932e42984f2000190a650be",
 		}
 	)
 
@@ -57,13 +57,13 @@ var _ = Describe("Extract", func() {
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(data)).To(Equal(layer))
 		}
-		Expect(filepath.Join(outputDir, imageLayers[1], "Files", "ProgramData", "out.txt")).To(BeAnExistingFile())
-		Expect(filepath.Join(outputDir, imageLayers[0], "Files", "ProgramData", "out1.txt")).To(BeAnExistingFile())
+		Expect(filepath.Join(outputDir, imageLayers[2], "Files", "ProgramData", "out.txt")).To(BeAnExistingFile())
+		Expect(filepath.Join(outputDir, imageLayers[3], "Files", "ProgramData", "out1.txt")).To(BeAnExistingFile())
 	})
 
 	It("only outputs the top layer path to stdout", func() {
 		Eventually(extractSess).Should(gexec.Exit(0))
-		Expect(string(extractSess.Out.Contents())).To(Equal(filepath.Join(outputDir, imageLayers[0])))
+		Expect(string(extractSess.Out.Contents())).To(Equal(filepath.Join(outputDir, imageLayers[3])))
 	})
 
 	Context("when an image has a layer that has been partially extracted", func() {
@@ -74,16 +74,16 @@ var _ = Describe("Extract", func() {
 			firstSess, err := gexec.Start(cmd, GinkgoWriter, GinkgoWriter)
 			Expect(err).NotTo(HaveOccurred())
 			Eventually(firstSess).Should(gexec.Exit(0))
-			Expect(os.Remove(filepath.Join(outputDir, imageLayers[0], "Files", "ProgramData", "out1.txt"))).To(Succeed())
-			Expect(os.Remove(filepath.Join(outputDir, imageLayers[0], ".complete"))).To(Succeed())
-			originalCreateTime = getCreatedTime(filepath.Join(outputDir, imageLayers[0]))
+			Expect(os.Remove(filepath.Join(outputDir, imageLayers[3], "Files", "ProgramData", "out1.txt"))).To(Succeed())
+			Expect(os.Remove(filepath.Join(outputDir, imageLayers[3], ".complete"))).To(Succeed())
+			originalCreateTime = getCreatedTime(filepath.Join(outputDir, imageLayers[3]))
 		})
 
 		It("re-extracts the layer", func() {
 			Eventually(extractSess).Should(gexec.Exit(0))
-			Expect(filepath.Join(outputDir, imageLayers[0], "Files", "ProgramData", "out1.txt")).To(BeAnExistingFile())
-			Expect(filepath.Join(outputDir, imageLayers[0], ".complete")).To(BeAnExistingFile())
-			Expect(getCreatedTime(filepath.Join(outputDir, imageLayers[0]))).To(BeNumerically(">", originalCreateTime))
+			Expect(filepath.Join(outputDir, imageLayers[3], "Files", "ProgramData", "out1.txt")).To(BeAnExistingFile())
+			Expect(filepath.Join(outputDir, imageLayers[3], ".complete")).To(BeAnExistingFile())
+			Expect(getCreatedTime(filepath.Join(outputDir, imageLayers[3]))).To(BeNumerically(">", originalCreateTime))
 		})
 	})
 
@@ -102,8 +102,8 @@ var _ = Describe("Extract", func() {
 
 		It("does not modify the layer", func() {
 			Eventually(extractSess).Should(gexec.Exit(0))
-			Expect(filepath.Join(outputDir, imageLayers[0], "Files", "ProgramData", "out1.txt")).To(BeAnExistingFile())
-			Expect(filepath.Join(outputDir, imageLayers[0], ".complete")).To(BeAnExistingFile())
+			Expect(filepath.Join(outputDir, imageLayers[3], "Files", "ProgramData", "out1.txt")).To(BeAnExistingFile())
+			Expect(filepath.Join(outputDir, imageLayers[3], ".complete")).To(BeAnExistingFile())
 
 			for i, layer := range imageLayers {
 				Expect(getCreatedTime(filepath.Join(outputDir, layer))).To(Equal(originalCreateTimes[i]))

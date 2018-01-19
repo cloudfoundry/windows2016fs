@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io"
 	"path/filepath"
-	"strings"
 
 	"code.cloudfoundry.org/windows2016fs/layer"
 
@@ -19,34 +18,46 @@ type LayerManager interface {
 	State(string) (layer.State, error)
 }
 
-type Manager struct {
-	srcDir       string
-	manifest     v1.Manifest
-	layerManager LayerManager
-	output       io.Writer
+//go:generate counterfeiter . MetadataReader
+type MetadataReader interface {
+	Read() (v1.Manifest, v1.Image, error)
 }
 
-func NewManager(srcDir string, manifest v1.Manifest, layerManager LayerManager, output io.Writer) *Manager {
+type Manager struct {
+	srcDir         string
+	metadataReader MetadataReader
+	layerManager   LayerManager
+	output         io.Writer
+}
+
+func NewManager(srcDir string, metadataReader MetadataReader, layerManager LayerManager, output io.Writer) *Manager {
 	return &Manager{
-		srcDir:       srcDir,
-		manifest:     manifest,
-		layerManager: layerManager,
-		output:       output,
+		srcDir:         srcDir,
+		metadataReader: metadataReader,
+		layerManager:   layerManager,
+		output:         output,
 	}
 }
 
 func (m *Manager) Extract() (string, error) {
 	parentLayerIds := []string{}
-	for _, l := range m.manifest.Layers {
-		if !validMediaType(l.MediaType) {
-			return "", fmt.Errorf("invalid layer media type: %s", l.MediaType)
-		}
 
-		layerId, err := getLayerSHA(l.Digest)
+	manifest, config, err := m.metadataReader.Read()
+	if err != nil {
+		return "", err
+	}
+
+	for i, l := range manifest.Layers {
+		layerSHA, err := digestSHA(l.Digest)
 		if err != nil {
 			return "", err
 		}
-		layerTgz := filepath.Join(m.srcDir, layerId)
+		layerTgz := filepath.Join(m.srcDir, "blobs", "sha256", layerSHA)
+
+		layerId, err := digestSHA(config.RootFS.DiffIDs[i])
+		if err != nil {
+			return "", err
+		}
 
 		state, err := m.layerManager.State(layerId)
 		if err != nil {
@@ -77,14 +88,10 @@ func (m *Manager) Extract() (string, error) {
 	return parentLayerIds[0], nil
 }
 
-func getLayerSHA(d digest.Digest) (string, error) {
+func digestSHA(d digest.Digest) (string, error) {
 	if err := d.Validate(); err != nil {
 		return "", err
 	}
 
 	return d.Encoded(), nil
-}
-
-func validMediaType(mediaType string) bool {
-	return strings.HasSuffix(mediaType, ".tar.gzip") || strings.HasSuffix(mediaType, ".tar+gzip")
 }

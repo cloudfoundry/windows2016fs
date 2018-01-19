@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -9,12 +8,12 @@ import (
 
 	"code.cloudfoundry.org/windows2016fs/image"
 	"code.cloudfoundry.org/windows2016fs/layer"
+	metadata "code.cloudfoundry.org/windows2016fs/oci-metadata"
 	"code.cloudfoundry.org/windows2016fs/writer"
 
 	"code.cloudfoundry.org/archiver/extractor"
 
 	"github.com/Microsoft/hcsshim"
-	"github.com/opencontainers/image-spec/specs-go/v1"
 )
 
 func main() {
@@ -32,32 +31,23 @@ func mainBody() error {
 	rootfstgz := os.Args[1]
 	outputDir := os.Args[2]
 
-	layerTempDir, err := ioutil.TempDir("", "hcslayers")
+	imageTempDir, err := ioutil.TempDir("", "hcslayers-oci-image")
 	if err != nil {
 		return err
 	}
 
-	if err := extractor.NewTgz().Extract(rootfstgz, layerTempDir); err != nil {
+	if err := extractor.NewTgz().Extract(rootfstgz, imageTempDir); err != nil {
 		return err
 	}
-	defer os.RemoveAll(layerTempDir)
-
-	manifestData, err := ioutil.ReadFile(filepath.Join(layerTempDir, "manifest.json"))
-	if err != nil {
-		return err
-	}
-
-	var manifest v1.Manifest
-	if err := json.Unmarshal(manifestData, &manifest); err != nil {
-		return err
-	}
+	defer os.RemoveAll(imageTempDir)
 
 	if err := os.MkdirAll(outputDir, 0755); err != nil {
 		return err
 	}
 
+	mr := metadata.NewReader(imageTempDir)
 	lm := layer.NewManager(hcsshim.DriverInfo{HomeDir: outputDir, Flavour: 1}, &writer.Writer{})
-	im := image.NewManager(layerTempDir, manifest, lm, os.Stderr)
+	im := image.NewManager(imageTempDir, mr, lm, os.Stderr)
 
 	topLayerId, err := im.Extract()
 	if err != nil {

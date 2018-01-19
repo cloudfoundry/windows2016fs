@@ -62,8 +62,8 @@ func (h *Hydrator) Run() error {
 		return err
 	}
 
-	m := metadata.New(tempDir, layers, diffIds)
-	if err := m.Write(); err != nil {
+	w := metadata.NewWriter(tempDir, layers, diffIds)
+	if err := w.Write(); err != nil {
 		return err
 	}
 
