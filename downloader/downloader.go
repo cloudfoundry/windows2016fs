@@ -62,8 +62,9 @@ func (d *Downloader) Run() ([]v1.Descriptor, []digest.Digest, error) {
 
 	downloadedLayers := []v1.Descriptor{}
 
-	for _, layer := range registryManifest.Layers {
+	for i, layer := range registryManifest.Layers {
 		l := layer
+		diffId := diffIds[i]
 
 		ociLayer := v1.Descriptor{
 			MediaType: v1.MediaTypeImageLayerGzip,
@@ -75,13 +76,13 @@ func (d *Downloader) Run() ([]v1.Descriptor, []digest.Digest, error) {
 
 		wg.Add(1)
 		go func() {
-			fmt.Fprintf(d.logger, "Layer %.15s begin\n", l.Digest)
+			fmt.Fprintf(d.logger, "Layer diffID: %.8s, sha256: %.8s begin\n", diffId.Encoded(), l.Digest.Encoded())
 			defer wg.Done()
 			if err := d.registry.DownloadLayer(l, d.downloadDir); err != nil {
 				errChan <- err
 				return
 			}
-			fmt.Fprintf(d.logger, "Layer %.15s end\n", l.Digest)
+			fmt.Fprintf(d.logger, "Layer diffID: %.8s, sha256: %.8s end\n", diffId.Encoded(), l.Digest.Encoded())
 		}()
 	}
 

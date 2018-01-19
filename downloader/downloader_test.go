@@ -30,8 +30,8 @@ var _ = Describe("Downloader", func() {
 
 	BeforeEach(func() {
 		sourceLayers = []v1.Descriptor{
-			{Digest: "layer1", Size: 1234},
-			{Digest: "layer2", Size: 6789},
+			{Digest: digest.NewDigestFromEncoded(digest.SHA256, "layer1"), Size: 1234},
+			{Digest: digest.NewDigestFromEncoded(digest.SHA256, "layer2"), Size: 6789},
 		}
 		manifestConfig = v1.Descriptor{Digest: "config", Size: 7777}
 		manifest = v1.Manifest{Layers: sourceLayers, Config: manifestConfig}
@@ -59,11 +59,11 @@ var _ = Describe("Downloader", func() {
 			layers, diffIds, err := d.Run()
 			Expect(err).NotTo(HaveOccurred())
 
-			Expect(layers[0].Digest).To(Equal(digest.Digest("layer1")))
+			Expect(layers[0].Digest).To(Equal(digest.Digest("sha256:layer1")))
 			Expect(layers[0].Size).To(Equal(int64(1234)))
 			Expect(layers[0].MediaType).To(Equal(v1.MediaTypeImageLayerGzip))
 
-			Expect(layers[1].Digest).To(Equal(digest.Digest("layer2")))
+			Expect(layers[1].Digest).To(Equal(digest.Digest("sha256:layer2")))
 			Expect(layers[1].Size).To(Equal(int64(6789)))
 			Expect(layers[1].MediaType).To(Equal(v1.MediaTypeImageLayerGzip))
 
