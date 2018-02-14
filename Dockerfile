@@ -26,3 +26,5 @@ RUN powershell.exe -command "Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControl
 RUN powershell.exe -command \
   $svs=('AppHostSvc', 'MSDTC', 'TermService', 'WAS', 'dhcp', 'diagtrack', 'lmhosts', 'w3svc', 'winrm'); \
   foreach ($name in $svs) { Set-Service -Name $name -StartupType Disabled }
+
+RUN powershell.exe -command "remove-windowsfeature -name 'windows-defender-features'"
