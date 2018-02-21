@@ -23,8 +23,8 @@ RUN msiexec /i C:\Windows\rewrite.msi /qn /quiet
 
 RUN powershell.exe -command "Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\dnscache' -Name Start -Value 4"
 
+RUN powershell.exe -command "remove-windowsfeature -name 'windows-defender-features'"
+
 RUN powershell.exe -command \
   $svs=('AppHostSvc', 'MSDTC', 'TermService', 'WAS', 'dhcp', 'diagtrack', 'lmhosts', 'w3svc', 'winrm', 'RemoteRegistry'); \
   foreach ($name in $svs) { Set-Service -Name $name -StartupType Disabled }
-
-RUN powershell.exe -command "remove-windowsfeature -name 'windows-defender-features'"
