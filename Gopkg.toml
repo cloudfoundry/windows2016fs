@@ -31,14 +31,6 @@ required = ["github.com/onsi/ginkgo/ginkgo"]
   name = "code.cloudfoundry.org/archiver"
 
 [[constraint]]
-  name = "github.com/Microsoft/go-winio"
-  version = "0.4.5"
-
-[[constraint]]
-  name = "github.com/Microsoft/hcsshim"
-  version = "v0.6.7"
-
-[[constraint]]
   name = "github.com/onsi/ginkgo"
   version = "1.4.0"
 
