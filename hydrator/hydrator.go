@@ -18,13 +18,15 @@ type Hydrator struct {
 	outDir    string
 	imageName string
 	imageTag  string
+	noTarball bool
 }
 
-func New(outDir, imageName, imageTag string) *Hydrator {
+func New(outDir, imageName, imageTag string, noTarball bool) *Hydrator {
 	return &Hydrator{
 		outDir:    outDir,
 		imageName: imageName,
 		imageTag:  imageTag,
+		noTarball: noTarball,
 	}
 }
 
@@ -37,43 +39,54 @@ func (h *Hydrator) Run() error {
 		return errors.New("No image name provided")
 	}
 
-	nameParts := strings.Split(h.imageName, "/")
-	if len(nameParts) != 2 {
-		return errors.New("Invalid image name")
-	}
-	outFile := filepath.Join(h.outDir, fmt.Sprintf("%s-%s.tgz", nameParts[1], h.imageTag))
+	var imageDownloadDir string
+	if h.noTarball {
+		imageDownloadDir = h.outDir
+	} else {
+		tempDir, err := ioutil.TempDir("", "hydrate")
+		if err != nil {
+			return fmt.Errorf("Could not create tmp dir: %s", tempDir)
+		}
+		defer os.RemoveAll(tempDir)
 
-	tempDir, err := ioutil.TempDir("", "hydrate")
-	if err != nil {
-		return fmt.Errorf("Could not create tmp dir: %s", tempDir)
+		imageDownloadDir = tempDir
 	}
-	defer os.RemoveAll(tempDir)
 
-	downloadDir := filepath.Join(tempDir, "blobs", "sha256")
-	if err := os.MkdirAll(downloadDir, 0755); err != nil {
+	blobDownloadDir := filepath.Join(imageDownloadDir, "blobs", "sha256")
+	if err := os.MkdirAll(blobDownloadDir, 0755); err != nil {
 		return err
 	}
 
 	r := registry.New("https://auth.docker.io", "https://registry.hub.docker.com", h.imageName, h.imageTag)
-	d := downloader.New(downloadDir, r, os.Stdout)
+	d := downloader.New(blobDownloadDir, r, os.Stdout)
 
 	layers, diffIds, err := d.Run()
 	if err != nil {
 		return err
 	}
 
-	w := metadata.NewWriter(tempDir, layers, diffIds)
+	w := metadata.NewWriter(imageDownloadDir, layers, diffIds)
 	if err := w.Write(); err != nil {
 		return err
 	}
+	fmt.Printf("\nAll layers downloaded.\n")
 
-	fmt.Printf("\nAll layers downloaded, writing %s...\n", outFile)
+	if !h.noTarball {
+		nameParts := strings.Split(h.imageName, "/")
+		if len(nameParts) != 2 {
+			return errors.New("Invalid image name")
+		}
+		outFile := filepath.Join(h.outDir, fmt.Sprintf("%s-%s.tgz", nameParts[1], h.imageTag))
 
-	c := compress.New()
-	if err := c.WriteTgz(tempDir, outFile); err != nil {
-		return err
+		fmt.Printf("Writing %s...\n", outFile)
+
+		c := compress.New()
+		if err := c.WriteTgz(imageDownloadDir, outFile); err != nil {
+			return err
+		}
+
+		fmt.Println("Done.")
 	}
 
-	fmt.Println("Done.")
 	return nil
 }

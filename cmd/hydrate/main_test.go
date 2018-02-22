@@ -58,7 +58,7 @@ var _ = Describe("Hydrate", func() {
 				hydrateArgs = []string{"--outputDir", outputDir, "--image", imageName, "--tag", imageTag}
 			})
 
-			It("creates a valid oci-layout file", func() {
+			It("downloads all the layers with the required metadata files", func() {
 				hydrateSess := runHydrate(hydrateArgs)
 				Eventually(hydrateSess).Should(gexec.Exit(0))
 
@@ -72,14 +72,6 @@ var _ = Describe("Hydrate", func() {
 				Expect(err).NotTo(HaveOccurred())
 				Expect(json.Unmarshal(content, &il)).To(Succeed())
 				Expect(il.Version).To(Equal(specs.Version))
-			})
-
-			It("downloads all the layers with the required metadata files", func() {
-				hydrateSess := runHydrate(hydrateArgs)
-				Eventually(hydrateSess).Should(gexec.Exit(0))
-
-				tarball := filepath.Join(outputDir, imageTarballName)
-				extractTarball(tarball, imageContentsDir)
 
 				im := loadManifest(imageContentsDir)
 				ic := loadConfig(imageContentsDir)
@@ -111,6 +103,41 @@ var _ = Describe("Hydrate", func() {
 					actualSha2 := sha256Sum(filepath.Join(outputDir, imageTarballName))
 
 					Expect(actualSha1).To(Equal(actualSha2))
+				})
+			})
+
+			Context("when the --noTarball flag is specified", func() {
+				BeforeEach(func() {
+					hydrateArgs = []string{"--outputDir", outputDir, "--image", imageName, "--tag", imageTag, "--noTarball"}
+				})
+
+				It("downloads the layers and metadata to the output dir without creating a tarball", func() {
+					hydrateSess := runHydrate(hydrateArgs)
+					Eventually(hydrateSess).Should(gexec.Exit(0))
+
+					ociLayoutFile := filepath.Join(outputDir, "oci-layout")
+
+					var il v1.ImageLayout
+					content, err := ioutil.ReadFile(ociLayoutFile)
+					Expect(err).NotTo(HaveOccurred())
+					Expect(json.Unmarshal(content, &il)).To(Succeed())
+					Expect(il.Version).To(Equal(specs.Version))
+
+					im := loadManifest(outputDir)
+					ic := loadConfig(outputDir)
+
+					for i, layer := range im.Layers {
+						Expect(layer.MediaType).To(Equal(v1.MediaTypeImageLayerGzip))
+
+						layerFile := filename(outputDir, layer)
+						fi, err := os.Stat(layerFile)
+						Expect(err).NotTo(HaveOccurred())
+						Expect(fi.Size()).To(Equal(layer.Size))
+
+						Expect(sha256Sum(layerFile)).To(Equal(layer.Digest.Encoded()))
+
+						Expect(diffID(layerFile)).To(Equal(ic.RootFS.DiffIDs[i].Encoded()))
+					}
 				})
 			})
 
