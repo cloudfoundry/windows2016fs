@@ -16,8 +16,6 @@ COPY Git-*-64-bit.exe /git-setup.exe
 RUN C:\git-setup.exe /SILENT /NORESTART
 RUN del /F C:\git-setup.exe
 
-COPY tar-*.exe /Windows/tar.exe
-
 COPY rewrite*.msi /Windows/rewrite.msi
 RUN msiexec /i C:\Windows\rewrite.msi /qn /quiet
 
