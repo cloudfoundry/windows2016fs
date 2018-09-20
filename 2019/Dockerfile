@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/windowsservercore-insider:10.0.17733.1000
+FROM mcr.microsoft.com/windowsservercore-insider:10.0.17744.1001
 
 RUN cmd.exe /C net users /ADD vcap /passwordreq:no /expires:never && runas /user:vcap whoami
 RUN cmd.exe /C net accounts /maxpwage:UNLIMITED
@@ -19,7 +19,7 @@ RUN del /F C:\git-setup.exe
 COPY rewrite*.msi /Windows/rewrite.msi
 RUN msiexec /i C:\Windows\rewrite.msi /qn /quiet
 
-RUN powershell.exe -command "remove-windowsfeature -name 'windows-defender-features'"
+RUN powershell.exe -command "remove-windowsfeature -name 'windows-defender'"
 
 RUN powershell.exe -command \
   $svs=('AppHostSvc', 'MSDTC', 'TermService', 'WAS', 'dhcp', 'diagtrack', 'lmhosts', 'w3svc', 'winrm', 'RemoteRegistry'); \
