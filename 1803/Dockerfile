@@ -19,6 +19,12 @@ RUN del /F C:\git-setup.exe
 COPY rewrite*.msi /Windows/rewrite.msi
 RUN msiexec /i C:\Windows\rewrite.msi /qn /quiet
 
+RUN powershell.exe -command \
+	$sstfile = [System.IO.Path]::GetTempPath() + 'roots.sst'; \
+	certutil -generateSSTFromWU $sstfile; \
+	Import-Certificate -CertStoreLocation Cert:\LocalMachine\Root $sstfile; \
+	Remove-Item -path $sstfile
+
 RUN powershell.exe -command "Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\dnscache' -Name Start -Value 4"
 
 RUN powershell.exe -command "remove-windowsfeature -name 'windows-defender-features'"
