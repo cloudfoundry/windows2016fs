@@ -25,9 +25,9 @@ RUN powershell.exe -command \
 	Import-Certificate -CertStoreLocation Cert:\LocalMachine\Root $sstfile; \
 	Remove-Item -path $sstfile
 
-RUN powershell.exe -command "start-bitstransfer https://aka.ms/vs/15/release/vc_redist.x64.exe $env:TEMP\vc_redist.x64.exe"
-RUN cmd.exe /s /c "%TEMP%\vc_redist.x64.exe /install /passive /norestart /wait"
-RUN del /F "%TEMP%\vc_redist.x64.exe"
+COPY vc_redist.x64.exe /vc_redist.x64.exe
+RUN cmd.exe /s /c "c:\vc_redist.x64.exe /install /passive /norestart /wait"
+RUN del /F "c:\vc_redist.x64.exe"
 
 RUN powershell.exe -command "remove-windowsfeature -name 'windows-defender'"
 
