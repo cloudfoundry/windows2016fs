@@ -21,12 +21,6 @@ COPY tar-*.exe /Windows/tar.exe
 COPY rewrite*.msi /Windows/rewrite.msi
 RUN msiexec /i C:\Windows\rewrite.msi /qn /quiet
 
-RUN powershell.exe -command \
-	$sstfile = [System.IO.Path]::GetTempPath() + 'roots.sst'; \
-	certutil -generateSSTFromWU $sstfile; \
-	Import-Certificate -CertStoreLocation Cert:\LocalMachine\Root $sstfile; \
-	Remove-Item -path $sstfile
-
 COPY vc_redist.x64.exe /vc_redist.x64.exe
 RUN cmd.exe /s /c "c:\vc_redist.x64.exe /install /passive /norestart /wait"
 RUN del /F "c:\vc_redist.x64.exe"
