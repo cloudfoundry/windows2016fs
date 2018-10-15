@@ -23,6 +23,9 @@ COPY vc_redist.x64.exe /vc_redist.x64.exe
 RUN cmd.exe /s /c "c:\vc_redist.x64.exe /install /passive /norestart /wait"
 RUN del /F "c:\vc_redist.x64.exe"
 
+COPY enable-vcap-custom-cert.ps1 /Windows/enable-vcap-custom-cert.ps1
+RUN powershell.exe -command C:\Windows\enable-vcap-custom-cert.ps1
+
 RUN powershell.exe -command "Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\dnscache' -Name Start -Value 4"
 
 RUN powershell.exe -command "remove-windowsfeature -name 'windows-defender-features'"
