@@ -25,8 +25,12 @@ COPY vc_redist.x64.exe /vc_redist.x64.exe
 RUN cmd.exe /s /c "c:\vc_redist.x64.exe /install /passive /norestart /wait"
 RUN del /F "c:\vc_redist.x64.exe"
 
+RUN cmd.exe /c "echo Allow vcap to add custom certs"
 COPY enable-vcap-custom-cert.ps1 /Windows/enable-vcap-custom-cert.ps1
 RUN powershell.exe -command C:\Windows\enable-vcap-custom-cert.ps1
+
+COPY verify-vcap-custom-cert.ps1 /Windows/verify-vcap-custom-cert.ps1
+RUN powershell.exe -command C:\Windows\verify-vcap-custom-cert.ps1
 
 RUN powershell.exe -command "Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\dnscache' -Name Start -Value 4"
 
