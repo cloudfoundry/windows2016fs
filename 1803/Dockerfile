@@ -33,3 +33,6 @@ RUN powershell.exe -command "remove-windowsfeature -name 'windows-defender-featu
 RUN powershell.exe -command \
   $svs=('AppHostSvc', 'MSDTC', 'TermService', 'WAS', 'dhcp', 'diagtrack', 'lmhosts', 'w3svc', 'winrm', 'RemoteRegistry'); \
   foreach ($name in $svs) { Set-Service -Name $name -StartupType Disabled }
+
+COPY verify-vcap-custom-cert.ps1 /Windows/verify-vcap-custom-cert.ps1
+RUN powershell.exe -command C:\Windows\verify-vcap-custom-cert.ps1
