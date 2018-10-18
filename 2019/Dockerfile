@@ -23,14 +23,8 @@ COPY vc_redist.x64.exe /vc_redist.x64.exe
 RUN cmd.exe /s /c "c:\vc_redist.x64.exe /install /passive /norestart /wait"
 RUN del /F "c:\vc_redist.x64.exe"
 
-COPY enable-vcap-custom-cert.ps1 /Windows/enable-vcap-custom-cert.ps1
-RUN powershell.exe -command C:\Windows\enable-vcap-custom-cert.ps1
-
 RUN powershell.exe -command "remove-windowsfeature -name 'windows-defender'"
 
 RUN powershell.exe -command \
   $svs=('AppHostSvc', 'MSDTC', 'TermService', 'WAS', 'dhcp', 'diagtrack', 'lmhosts', 'w3svc', 'winrm', 'RemoteRegistry'); \
   foreach ($name in $svs) { Set-Service -Name $name -StartupType Disabled }
-
-COPY verify-vcap-custom-cert.ps1 /Windows/verify-vcap-custom-cert.ps1
-RUN powershell.exe -command C:\Windows\verify-vcap-custom-cert.ps1
