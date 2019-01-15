@@ -81,6 +81,7 @@ var _ = Describe("Windows2016fs", func() {
 
 	BeforeSuite(func() {
 		tempDirPath, err = ioutil.TempDir("", "build")
+		Expect(err).NotTo(HaveOccurred())
 
 		shareName = os.Getenv("SHARE_NAME")
 		shareUsername = os.Getenv("SHARE_USERNAME")
