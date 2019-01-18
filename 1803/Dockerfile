@@ -23,12 +23,11 @@ COPY vc_redist.x64.exe /vc_redist.x64.exe
 RUN cmd.exe /s /c "c:\vc_redist.x64.exe /install /passive /norestart /wait"
 RUN del /F "c:\vc_redist.x64.exe"
 
-RUN powershell.exe -command "Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\dnscache' -Name Start -Value 4"
-
 RUN powershell.exe -command "remove-windowsfeature -name 'windows-defender-features'"
 
 RUN powershell.exe -command \
   $svs=('AppHostSvc', 'MSDTC', 'TermService', 'WAS', 'dhcp', 'diagtrack', 'w3svc', 'winrm', 'RemoteRegistry'); \
   foreach ($name in $svs) { Set-Service -Name $name -StartupType Disabled }
 
+RUN powershell.exe -command "Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\dnscache' -Name Start -Value 2"
 RUN powershell.exe -command Set-Service -Name lmhosts -StartupType Manual

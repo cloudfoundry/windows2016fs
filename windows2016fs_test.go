@@ -22,6 +22,15 @@ func expectCommand(executable string, params ...string) {
 	Eventually(session, 10*time.Minute).Should(Exit(0))
 }
 
+func lookupEnv(envName string) string {
+	value, ok := os.LookupEnv(envName)
+	if !ok {
+		Fail(fmt.Sprintf("Environment variable %s must be set", envName))
+	}
+
+	return value
+}
+
 func buildDockerImage(tempDirPath, depDir, imageId, tag string) {
 	dockerSrcPath := filepath.Join(tag, "Dockerfile")
 	Expect(dockerSrcPath).To(BeARegularFile())
@@ -83,15 +92,15 @@ var _ = Describe("Windows2016fs", func() {
 		tempDirPath, err = ioutil.TempDir("", "build")
 		Expect(err).NotTo(HaveOccurred())
 
-		shareName = os.Getenv("SHARE_NAME")
-		shareUsername = os.Getenv("SHARE_USERNAME")
-		shareUsername2 = os.Getenv("SHARE_USERNAME2")
-		sharePassword = os.Getenv("SHARE_PASSWORD")
-		shareFqdn = os.Getenv("SHARE_FQDN")
-		shareIP = os.Getenv("SHARE_IP")
-		tag = os.Getenv("VERSION_TAG")
+		shareName = lookupEnv("SHARE_NAME")
+		shareUsername = lookupEnv("SHARE_USERNAME")
+		shareUsername2 = lookupEnv("SHARE_USERNAME2")
+		sharePassword = lookupEnv("SHARE_PASSWORD")
+		shareFqdn = lookupEnv("SHARE_FQDN")
+		shareIP = lookupEnv("SHARE_IP")
+		tag = lookupEnv("VERSION_TAG")
 		imageId = fmt.Sprintf("windows2016fs-ci:%s", tag)
-		depDir := os.Getenv("DEPENDENCIES_DIR")
+		depDir := lookupEnv("DEPENDENCIES_DIR")
 
 		buildDockerImage(tempDirPath, depDir, imageId, tag)
 	})
@@ -102,8 +111,8 @@ var _ = Describe("Windows2016fs", func() {
 	})
 
 	It("can write to an FQDN-based smb share", func() {
-		if tag == "1709" || tag == "1803" {
-			Skip("FQDNs not yet enabled on 1709 or 1803")
+		if tag == "1709" {
+			Skip("FQDNs not yet enabled on 1709")
 		}
 
 		shareUnc := fmt.Sprintf("\\\\%s\\%s", shareFqdn, shareName)
