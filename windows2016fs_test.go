@@ -111,10 +111,6 @@ var _ = Describe("Windows2016fs", func() {
 	})
 
 	It("can write to an FQDN-based smb share", func() {
-		if tag == "1709" {
-			Skip("FQDNs not yet enabled on 1709")
-		}
-
 		shareUnc := fmt.Sprintf("\\\\%s\\%s", shareFqdn, shareName)
 		expectMountSMBImage(shareUnc, shareUsername, sharePassword, tempDirPath, imageId)
 	})
