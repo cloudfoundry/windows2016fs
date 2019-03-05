@@ -25,12 +25,11 @@ RUN del /F "c:\vc_redist.x64.exe"
 
 RUN powershell.exe -command "remove-windowsfeature -name 'windows-defender'"
 
-# enable on-demand start of DNS cache to support FQDNs for net use
-RUN powershell.exe -command "Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\dnscache' -Name Start -Value 3"
-
-# enable on-demand start of lmhosts service
-RUN powershell.exe -command "Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\lmhosts' -Name Start -Value 3"
-
 RUN powershell.exe -command \
   $svs=('AppHostSvc', 'MSDTC', 'TermService', 'WAS', 'dhcp', 'diagtrack', 'w3svc', 'winrm', 'RemoteRegistry'); \
   foreach ($name in $svs) { Set-Service -Name $name -StartupType Disabled }
+
+RUN powershell.exe -command Set-Service -Name lmhosts -StartupType Manual
+
+# enable automatic start of DNS cache to support FQDNs for net use
+RUN powershell.exe -command "Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\dnscache' -Name Start -Value 2"
