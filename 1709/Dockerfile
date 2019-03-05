@@ -31,5 +31,7 @@ RUN powershell.exe -command \
   $svs=('AppHostSvc', 'MSDTC', 'TermService', 'WAS', 'dhcp', 'diagtrack', 'w3svc', 'winrm', 'RemoteRegistry'); \
   foreach ($name in $svs) { Set-Service -Name $name -StartupType Disabled }
 
-RUN powershell.exe -command "Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\dnscache' -Name Start -Value 2"
 RUN powershell.exe -command Set-Service -Name lmhosts -StartupType Manual
+
+# enable automatic start of DNS cache to support FQDNs for net use
+RUN powershell.exe -command "Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\dnscache' -Name Start -Value 2"
