@@ -1,12 +1,14 @@
 package windows2016fs_test
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"sync"
 	"time"
 
@@ -74,6 +76,46 @@ func expectMountSMBImage(shareUnc, shareUsername, sharePassword, tempDirPath, im
 	Eventually(session, 5*time.Minute).Should(Exit(0))
 }
 
+type serviceState struct {
+	Name      string
+	StartType int
+}
+
+func diff(left []serviceState, right []serviceState) map[string][]serviceState {
+	var serviceDiffs = make(map[string][]serviceState)
+
+	//set baseline states in [0] position
+	for _, service := range left {
+		serviceDiffs[strings.ToLower(service.Name)] = []serviceState{
+			service,
+			{},
+		}
+	}
+
+	//set actual states in [1] position
+	for _, rightServiceState := range right {
+		diff, ok := serviceDiffs[strings.ToLower(rightServiceState.Name)]
+
+		if !ok {
+			serviceDiffs[strings.ToLower(rightServiceState.Name)] = []serviceState{
+				{},
+				rightServiceState,
+			}
+		} else {
+			diff[1] = rightServiceState
+		}
+	}
+
+	//remove identical states
+	for serviceName, diff := range serviceDiffs {
+		if diff[0] == diff[1] {
+			delete(serviceDiffs, serviceName)
+		}
+	}
+
+	return serviceDiffs
+}
+
 var _ = Describe("Windows2016fs", func() {
 	var (
 		tag            string
@@ -132,4 +174,142 @@ var _ = Describe("Windows2016fs", func() {
 		}()
 		wg.Wait()
 	})
+
+	It("has expected list of services", func() {
+		var err error
+
+		jsonData, err := ioutil.ReadFile(filepath.Join("fixtures", "expected-baseline-services.json"))
+		Expect(err).ToNot(HaveOccurred())
+
+		var baselineServices []serviceState
+		err = json.Unmarshal(jsonData, &baselineServices)
+		Expect(err).ToNot(HaveOccurred())
+
+		command := exec.Command(
+			"docker",
+			"run",
+			imageId,
+			"powershell", "Get-Service | ConvertTo-JSON",
+		)
+
+		session, err := Start(command, GinkgoWriter, GinkgoWriter)
+		Expect(err).ToNot(HaveOccurred())
+		Eventually(session, 30*time.Second).Should(Exit(0))
+
+		actualServicesPowershellJSON := session.Out.Contents()
+
+		var actualServices []serviceState
+		err = json.Unmarshal(actualServicesPowershellJSON, &actualServices)
+		Expect(err).ToNot(HaveOccurred())
+
+		var expectedDiffFromBaseline map[string][]serviceState
+
+		switch tag {
+		case "1709":
+			expectedDiffFromBaseline = map[string][]serviceState{}
+		case "1803":
+			expectedDiffFromBaseline = map[string][]serviceState{
+				"mpssvc": {
+					{Name: "MpsSvc", StartType: 4},
+					{Name: "mpssvc", StartType: 4},
+				},
+				"usosvc": {
+					{Name: "UsoSvc", StartType: 3},
+					{Name: "UsoSvc", StartType: 2},
+				},
+				"wdnissvc": {
+					{Name: "WdNisSvc", StartType: 3},
+					{},
+				},
+				"windefend": {
+					{Name: "WinDefend", StartType: 4},
+					{},
+				},
+				"ssh-agent": {
+					{},
+					{Name: "ssh-agent", StartType: 4},
+				},
+				"scardsvr": {
+					{Name: "SCardSvr", StartType: 4},
+					{Name: "SCardSvr", StartType: 3},
+				},
+				"sense": {
+					{},
+					{Name: "Sense", StartType: 3},
+				},
+			}
+		case "2019":
+			expectedDiffFromBaseline = map[string][]serviceState{
+				"mpssvc": {
+					{Name: "MpsSvc", StartType: 4},
+					{Name: "mpssvc", StartType: 4},
+				},
+				"clipsvc": {
+					{Name: "ClipSVC", StartType: 3},
+					{Name: "ClipSVC", StartType: 4},
+				},
+				"fdphost": {
+					{Name: "fdPHost", StartType: 3},
+					{},
+				},
+				"fontcache": {
+					{Name: "FontCache", StartType: 4},
+					{},
+				},
+				"scardsvr": {
+					{Name: "SCardSvr", StartType: 4},
+					{Name: "SCardSvr", StartType: 3},
+				},
+				"spooler": {
+					{Name: "Spooler", StartType: 4},
+					{},
+				},
+				"sppsvc": {
+					{Name: "sppsvc", StartType: 2},
+					{Name: "sppsvc", StartType: 4},
+				},
+				"sysmain": {
+					{Name: "SysMain", StartType: 3},
+					{Name: "SysMain", StartType: 2},
+				},
+				"usosvc": {
+					{Name: "UsoSvc", StartType: 3},
+					{Name: "UsoSvc", StartType: 2},
+				},
+				"wdnissvc": {
+					{Name: "WdNisSvc", StartType: 3},
+					{},
+				},
+				"windefend": {
+					{Name: "WinDefend", StartType: 4},
+					{},
+				},
+				"appreadiness": {
+					{},
+					{Name: "AppReadiness", StartType: 3},
+				},
+				"sense": {
+					{},
+					{Name: "Sense", StartType: 3},
+				},
+				"sgrmbroker": {
+					{},
+					{Name: "SgrmBroker", StartType: 3},
+				},
+				"ssh-agent": {
+					{},
+					{Name: "ssh-agent", StartType: 4},
+				},
+				"waasmedicsvc": {
+					{},
+					{Name: "WaaSMedicSvc", StartType: 4},
+				},
+			}
+		}
+
+		actualDiffFromBaseline := diff(baselineServices, actualServices)
+
+		Expect(actualDiffFromBaseline).To(Equal(expectedDiffFromBaseline))
+	})
+
 })
