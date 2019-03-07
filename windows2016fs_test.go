@@ -118,16 +118,15 @@ func diff(left []serviceState, right []serviceState) map[string][]serviceState {
 
 var _ = Describe("Windows2016fs", func() {
 	var (
-		tag            string
-		imageId        string
-		tempDirPath    string
-		shareUsername  string
-		shareUsername2 string
-		sharePassword  string
-		shareName      string
-		shareIP        string
-		shareFqdn      string
-		err            error
+		tag           string
+		imageId       string
+		tempDirPath   string
+		shareUsername string
+		sharePassword string
+		shareName     string
+		shareIP       string
+		shareFqdn     string
+		err           error
 	)
 
 	BeforeSuite(func() {
@@ -136,7 +135,6 @@ var _ = Describe("Windows2016fs", func() {
 
 		shareName = lookupEnv("SHARE_NAME")
 		shareUsername = lookupEnv("SHARE_USERNAME")
-		shareUsername2 = lookupEnv("SHARE_USERNAME2")
 		sharePassword = lookupEnv("SHARE_PASSWORD")
 		shareFqdn = lookupEnv("SHARE_FQDN")
 		shareIP = lookupEnv("SHARE_IP")
@@ -163,15 +161,13 @@ var _ = Describe("Windows2016fs", func() {
 		wg := new(sync.WaitGroup)
 		wg.Add(2)
 
-		go func() {
-			expectMountSMBImage(shareUnc, shareUsername, sharePassword, tempDirPath, imageId)
-			wg.Done()
-		}()
+		for _, _ = range []int{1, 2} {
+			go func() {
+				expectMountSMBImage(shareUnc, shareUsername, sharePassword, tempDirPath, imageId)
+				wg.Done()
+			}()
+		}
 
-		go func() {
-			expectMountSMBImage(shareUnc, shareUsername2, sharePassword, tempDirPath, imageId)
-			wg.Done()
-		}()
 		wg.Wait()
 	})
 
