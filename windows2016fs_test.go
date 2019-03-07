@@ -234,21 +234,29 @@ var _ = Describe("Windows2016fs", func() {
 					{Name: "WinDefend", StartType: 4},
 					{},
 				},
+			}
+		case "2019":
+			expectedDiffFromBaseline = map[string][]serviceState{
+				"appreadiness": {
+					{},
+					{Name: "AppReadiness", StartType: 4},
+				},
+				"sense": {
+					{},
+					{Name: "Sense", StartType: 4},
+				},
+				"sgrmbroker": {
+					{},
+					{Name: "SgrmBroker", StartType: 4},
+				},
 				"ssh-agent": {
 					{},
 					{Name: "ssh-agent", StartType: 4},
 				},
-				"scardsvr": {
-					{Name: "SCardSvr", StartType: 4},
-					{Name: "SCardSvr", StartType: 3},
-				},
-				"sense": {
+				"waasmedicsvc": {
 					{},
-					{Name: "Sense", StartType: 3},
+					{Name: "WaaSMedicSvc", StartType: 4},
 				},
-			}
-		case "2019":
-			expectedDiffFromBaseline = map[string][]serviceState{
 				"mpssvc": {
 					{Name: "MpsSvc", StartType: 4},
 					{Name: "mpssvc", StartType: 4},
@@ -256,6 +264,18 @@ var _ = Describe("Windows2016fs", func() {
 				"clipsvc": {
 					{Name: "ClipSVC", StartType: 3},
 					{Name: "ClipSVC", StartType: 4},
+				},
+				"sppsvc": {
+					{Name: "sppsvc", StartType: 2},
+					{Name: "sppsvc", StartType: 4},
+				},
+				"sysmain": {
+					{Name: "SysMain", StartType: 3},
+					{Name: "SysMain", StartType: 4},
+				},
+				"usosvc": {
+					{Name: "UsoSvc", StartType: 3},
+					{Name: "UsoSvc", StartType: 4},
 				},
 				"fdphost": {
 					{Name: "fdPHost", StartType: 3},
@@ -265,25 +285,9 @@ var _ = Describe("Windows2016fs", func() {
 					{Name: "FontCache", StartType: 4},
 					{},
 				},
-				"scardsvr": {
-					{Name: "SCardSvr", StartType: 4},
-					{Name: "SCardSvr", StartType: 3},
-				},
 				"spooler": {
 					{Name: "Spooler", StartType: 4},
 					{},
-				},
-				"sppsvc": {
-					{Name: "sppsvc", StartType: 2},
-					{Name: "sppsvc", StartType: 4},
-				},
-				"sysmain": {
-					{Name: "SysMain", StartType: 3},
-					{Name: "SysMain", StartType: 2},
-				},
-				"usosvc": {
-					{Name: "UsoSvc", StartType: 3},
-					{Name: "UsoSvc", StartType: 2},
 				},
 				"wdnissvc": {
 					{Name: "WdNisSvc", StartType: 3},
@@ -292,26 +296,6 @@ var _ = Describe("Windows2016fs", func() {
 				"windefend": {
 					{Name: "WinDefend", StartType: 4},
 					{},
-				},
-				"appreadiness": {
-					{},
-					{Name: "AppReadiness", StartType: 3},
-				},
-				"sense": {
-					{},
-					{Name: "Sense", StartType: 3},
-				},
-				"sgrmbroker": {
-					{},
-					{Name: "SgrmBroker", StartType: 3},
-				},
-				"ssh-agent": {
-					{},
-					{Name: "ssh-agent", StartType: 4},
-				},
-				"waasmedicsvc": {
-					{},
-					{Name: "WaaSMedicSvc", StartType: 4},
 				},
 			}
 		default:
