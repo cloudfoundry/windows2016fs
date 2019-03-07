@@ -210,13 +210,21 @@ var _ = Describe("Windows2016fs", func() {
 			expectedDiffFromBaseline = map[string][]serviceState{}
 		case "1803":
 			expectedDiffFromBaseline = map[string][]serviceState{
+				"sense": {
+					{},
+					{Name: "Sense", StartType: 4},
+				},
+				"ssh-agent": {
+					{},
+					{Name: "ssh-agent", StartType: 4},
+				},
 				"mpssvc": {
 					{Name: "MpsSvc", StartType: 4},
 					{Name: "mpssvc", StartType: 4},
 				},
 				"usosvc": {
 					{Name: "UsoSvc", StartType: 3},
-					{Name: "UsoSvc", StartType: 2},
+					{Name: "UsoSvc", StartType: 4},
 				},
 				"wdnissvc": {
 					{Name: "WdNisSvc", StartType: 3},
