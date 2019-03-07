@@ -315,4 +315,37 @@ var _ = Describe("Windows2016fs", func() {
 		Expect(actualDiffFromBaseline).To(Equal(expectedDiffFromBaseline))
 	})
 
+	It("has expected version of .NET Framework", func() {
+		var err error
+
+		command := exec.Command(
+			"docker",
+			"run",
+			"--rm",
+			imageId,
+			"powershell", `Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\' | Get-ItemPropertyValue -Name Release`,
+		)
+
+		session, err := Start(command, GinkgoWriter, GinkgoWriter)
+		Expect(err).ToNot(HaveOccurred())
+		Eventually(session, 30*time.Second).Should(Exit(0))
+
+		actualFrameworkRelease := strings.TrimSpace(string(session.Out.Contents()))
+
+		var expectedFrameworkRelease string
+
+		// https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/release-keys-and-os-versions
+		switch tag {
+		case "1709":
+			expectedFrameworkRelease = "461308" //Framwork version 4.7.1 (link: "...Windows Server, version 1709")
+		case "1803":
+			expectedFrameworkRelease = "461808" //Framwork version 4.7.2 (link: "...Windows Server, version 1803")
+		case "2019":
+			expectedFrameworkRelease = "461814" //Framwork version 4.7.2 (link: "1803...all other Windows operating systems")
+		default:
+			Fail(fmt.Sprintf("unknown tag: %+s", tag))
+		}
+
+		Expect(actualFrameworkRelease).To(Equal(expectedFrameworkRelease))
+	})
 })
