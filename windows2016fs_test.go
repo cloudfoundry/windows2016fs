@@ -188,6 +188,7 @@ var _ = Describe("Windows2016fs", func() {
 		command := exec.Command(
 			"docker",
 			"run",
+			"--rm",
 			imageId,
 			"powershell", "Get-Service | ConvertTo-JSON",
 		)
@@ -305,6 +306,8 @@ var _ = Describe("Windows2016fs", func() {
 					{Name: "WaaSMedicSvc", StartType: 4},
 				},
 			}
+		default:
+			Fail(fmt.Sprintf("unknown tag: %+s", tag))
 		}
 
 		actualDiffFromBaseline := diff(baselineServices, actualServices)
