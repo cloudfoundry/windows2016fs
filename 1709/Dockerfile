@@ -27,9 +27,10 @@ RUN del /F "c:\vc_redist.x64.exe"
 
 RUN powershell.exe -command "remove-windowsfeature -name 'windows-defender-features'"
 
+# disable common unneeded services
 RUN powershell.exe -command \
   $svs=('AppHostSvc', 'MSDTC', 'TermService', 'WAS', 'dhcp', 'diagtrack', 'w3svc', 'winrm', 'RemoteRegistry'); \
-  foreach ($name in $svs) { Set-Service -Name $name -StartupType Disabled }
+  foreach ($name in $svs) { Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\$name" -Name Start -Value 4 }
 
 RUN powershell.exe -command Set-Service -Name lmhosts -StartupType Manual
 
