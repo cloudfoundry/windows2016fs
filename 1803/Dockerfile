@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/windows/servercore:1803
+FROM mcr.microsoft.com/windows/servercore:1803-KB4487017
 
 RUN cmd.exe /C net users /ADD vcap /passwordreq:no /expires:never && runas /user:vcap whoami
 RUN cmd.exe /C net accounts /maxpwage:UNLIMITED

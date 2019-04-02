@@ -3,7 +3,6 @@ package windows2016fs_test
 import (
 	"encoding/json"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -33,7 +32,7 @@ func lookupEnv(envName string) string {
 	return value
 }
 
-func buildDockerImage(tempDirPath, depDir, imageId, tag string) {
+func buildDockerImage(tempDirPath, depDir, imageNameAndTag, tag string) {
 	dockerSrcPath := filepath.Join(tag, "Dockerfile")
 	Expect(dockerSrcPath).To(BeARegularFile())
 
@@ -43,37 +42,49 @@ func buildDockerImage(tempDirPath, depDir, imageId, tag string) {
 
 	expectCommand("powershell", "Copy-Item", "-Path", filepath.Join(depDir, "*"), "-Destination", tempDirPath)
 
-	expectCommand("docker", "build", "-f", filepath.Join(tempDirPath, "Dockerfile"), "--tag", imageId, tempDirPath)
+	expectCommand(
+		"docker",
+		"build",
+		"-f", filepath.Join(tempDirPath, "Dockerfile"),
+		"--tag", imageNameAndTag,
+		"--pull",
+		tempDirPath,
+	)
 }
 
-func expectMountSMBImage(shareUnc, shareUsername, sharePassword, tempDirPath, imageId string) {
+func buildTestDockerImage(imageNameAndTag, testImageNameAndTag string) {
+	expectCommand(
+		"docker",
+		"build",
+		"-f", "test.Dockerfile",
+		"--build-arg", fmt.Sprintf("CI_IMAGE_NAME_AND_TAG=%s", imageNameAndTag),
+		"--tag", testImageNameAndTag,
+		".",
+	)
+}
+
+func expectMountSMBImage(shareUnc, shareUsername, sharePassword, tempDirPath, imageNameAndTag string) {
 	command := exec.Command(
 		"docker",
 		"run",
 		"--rm",
-		"--interactive",
+		"--user", "vcap",
 		"--env", fmt.Sprintf("SHARE_UNC=%s", shareUnc),
 		"--env", fmt.Sprintf("SHARE_USERNAME=%s", shareUsername),
 		"--env", fmt.Sprintf("SHARE_PASSWORD=%s", sharePassword),
-		imageId,
+		imageNameAndTag,
 		"powershell",
+		"fixtures/container-test.ps1",
 	)
-
-	stdin, err := command.StdinPipe()
-	Expect(err).ToNot(HaveOccurred())
 
 	session, err := Start(command, GinkgoWriter, GinkgoWriter)
 	Expect(err).ToNot(HaveOccurred())
 
-	containerTestPs1Content, err := ioutil.ReadFile("container-test.ps1")
-	Expect(err).ToNot(HaveOccurred())
-
-	_, err = io.WriteString(stdin, string(containerTestPs1Content))
-	Expect(err).ToNot(HaveOccurred())
-	stdin.Close()
-
-	Expect(err).ToNot(HaveOccurred())
 	Eventually(session, 5*time.Minute).Should(Exit(0))
+
+	smbMapping := string(session.Out.Contents())
+	Expect(smbMapping).To(ContainSubstring("T:"))
+	Expect(smbMapping).To(ContainSubstring(shareUnc))
 }
 
 type serviceState struct {
@@ -118,15 +129,16 @@ func diff(left []serviceState, right []serviceState) map[string][]serviceState {
 
 var _ = Describe("Windows2016fs", func() {
 	var (
-		tag           string
-		imageId       string
-		tempDirPath   string
-		shareUsername string
-		sharePassword string
-		shareName     string
-		shareIP       string
-		shareFqdn     string
-		err           error
+		tag                 string
+		imageNameAndTag     string
+		testImageNameAndTag string
+		tempDirPath         string
+		shareUsername       string
+		sharePassword       string
+		shareName           string
+		shareIP             string
+		shareFqdn           string
+		err                 error
 	)
 
 	BeforeSuite(func() {
@@ -139,31 +151,37 @@ var _ = Describe("Windows2016fs", func() {
 		shareFqdn = lookupEnv("SHARE_FQDN")
 		shareIP = lookupEnv("SHARE_IP")
 		tag = lookupEnv("VERSION_TAG")
-		imageId = fmt.Sprintf("windows2016fs-ci:%s", tag)
+		imageNameAndTag = fmt.Sprintf("windows2016fs-ci:%s", tag)
+		testImageNameAndTag = fmt.Sprintf("windows2016fs-test:%s", tag)
 		depDir := lookupEnv("DEPENDENCIES_DIR")
 
-		buildDockerImage(tempDirPath, depDir, imageId, tag)
+		buildDockerImage(tempDirPath, depDir, imageNameAndTag, tag)
 	})
 
 	It("can write to an IP-based smb share", func() {
-		shareUnc := fmt.Sprintf("\\\\%s\\%s", shareIP, shareName)
-		expectMountSMBImage(shareUnc, shareUsername, sharePassword, tempDirPath, imageId)
+		shareUnc := fmt.Sprintf(`\\%s\%s`, shareIP, shareName)
+		buildTestDockerImage(imageNameAndTag, testImageNameAndTag)
+
+		expectMountSMBImage(shareUnc, shareUsername, sharePassword, tempDirPath, testImageNameAndTag)
 	})
 
 	It("can write to an FQDN-based smb share", func() {
-		shareUnc := fmt.Sprintf("\\\\%s\\%s", shareFqdn, shareName)
-		expectMountSMBImage(shareUnc, shareUsername, sharePassword, tempDirPath, imageId)
+		shareUnc := fmt.Sprintf(`\\%s\%s`, shareFqdn, shareName)
+		buildTestDockerImage(imageNameAndTag, testImageNameAndTag)
+		expectMountSMBImage(shareUnc, shareUsername, sharePassword, tempDirPath, testImageNameAndTag)
 	})
 
-	It("can access one share multiple times, with multiple different credentials on the same VM", func() {
-		shareUnc := fmt.Sprintf("\\\\%s\\%s", shareIP, shareName)
+	It("can access one share multiple times on the same VM", func() {
+		shareUnc := fmt.Sprintf(`\\%s\%s`, shareIP, shareName)
+		buildTestDockerImage(imageNameAndTag, testImageNameAndTag)
 
+		concurrentConnections := 10
 		wg := new(sync.WaitGroup)
-		wg.Add(2)
+		wg.Add(concurrentConnections)
 
-		for _, _ = range []int{1, 2} {
+		for i := 1; i <= concurrentConnections; i++ {
 			go func() {
-				expectMountSMBImage(shareUnc, shareUsername, sharePassword, tempDirPath, imageId)
+				expectMountSMBImage(shareUnc, shareUsername, sharePassword, tempDirPath, testImageNameAndTag)
 				wg.Done()
 			}()
 		}
@@ -185,7 +203,7 @@ var _ = Describe("Windows2016fs", func() {
 			"docker",
 			"run",
 			"--rm",
-			imageId,
+			imageNameAndTag,
 			"powershell", "Get-Service | ConvertTo-JSON",
 		)
 
@@ -310,7 +328,7 @@ var _ = Describe("Windows2016fs", func() {
 			"docker",
 			"run",
 			"--rm",
-			imageId,
+			imageNameAndTag,
 			"powershell", `Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\' | Get-ItemPropertyValue -Name Release`,
 		)
 
