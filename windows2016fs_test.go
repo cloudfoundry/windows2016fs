@@ -56,10 +56,10 @@ func buildTestDockerImage(imageNameAndTag, testImageNameAndTag string) {
 	expectCommand(
 		"docker",
 		"build",
-		"-f", "test.Dockerfile",
+		"-f", filepath.Join("fixtures", "test.Dockerfile"),
 		"--build-arg", fmt.Sprintf("CI_IMAGE_NAME_AND_TAG=%s", imageNameAndTag),
 		"--tag", testImageNameAndTag,
-		".",
+		"fixtures",
 	)
 }
 
@@ -68,14 +68,13 @@ func expectMountSMBImage(shareUnc, shareUsername, sharePassword, tempDirPath, im
 		"docker",
 		"run",
 		"--rm",
-		"--interactive",
 		"--user", "vcap",
 		"--env", fmt.Sprintf("SHARE_UNC=%s", shareUnc),
 		"--env", fmt.Sprintf("SHARE_USERNAME=%s", shareUsername),
 		"--env", fmt.Sprintf("SHARE_PASSWORD=%s", sharePassword),
 		imageNameAndTag,
 		"powershell",
-		"fixtures/container-test.ps1",
+		`.\container-test.ps1`,
 	)
 
 	session, err := Start(command, GinkgoWriter, GinkgoWriter)
@@ -152,7 +151,7 @@ var _ = Describe("Windows2016fs", func() {
 		shareFqdn = lookupEnv("SHARE_FQDN")
 		shareIP = lookupEnv("SHARE_IP")
 		tag = lookupEnv("VERSION_TAG")
-		imageNameAndTag = fmt.Sprintf("windows2016fs-ci:%s", tag)
+		imageNameAndTag = fmt.Sprintf("windows2016fs-candidate:%s", tag)
 		testImageNameAndTag = fmt.Sprintf("windows2016fs-test:%s", tag)
 		depDir := lookupEnv("DEPENDENCIES_DIR")
 
@@ -356,45 +355,12 @@ var _ = Describe("Windows2016fs", func() {
 		Expect(actualFrameworkRelease).To(Equal(expectedFrameworkRelease))
 	})
 
-	It("makes builtin users the owner of the odbc registry object", func() {
-		if tag == "1709" || tag == "2019" {
-			Skip(fmt.Sprintf("Not supported in %s", tag))
-		}
-
-		command := exec.Command(
-			"docker",
-			"run",
-			"--rm",
-			imageNameAndTag,
-			"powershell",
-			"Get-Acl -Path 'HKLM:SOFTWARE\\ODBC' | Format-List",
-		)
-
-		_, err := command.StdinPipe()
-		Expect(err).ToNot(HaveOccurred())
-
-		session, err := Start(command, GinkgoWriter, GinkgoWriter)
-		Expect(err).ToNot(HaveOccurred())
-
-		Eventually(session, 30*time.Second).Should(Exit(0))
-		owner := string(session.Out.Contents())
-
-		Expect(owner).To(ContainSubstring(`vcap Allow  FullControl`))
-	})
-
 	It("can import a registry file", func() {
 		if tag == "1709" || tag == "2019" {
 			Skip(fmt.Sprintf("Not supported in %s", tag))
 		}
 
-		expectCommand(
-			"docker",
-			"build",
-			"-f", "test.Dockerfile",
-			"--build-arg", fmt.Sprintf("CI_IMAGE_NAME_AND_TAG=%s", imageNameAndTag),
-			"--tag", testImageNameAndTag,
-			".",
-		)
+		buildTestDockerImage(imageNameAndTag, testImageNameAndTag)
 
 		command := exec.Command(
 			"docker",
@@ -403,7 +369,7 @@ var _ = Describe("Windows2016fs", func() {
 			"--user", "vcap",
 			testImageNameAndTag,
 			"cmd", "/c",
-			`reg import fixtures\odbc.reg`,
+			`reg import odbc.reg`,
 		)
 
 		_, err := command.StdinPipe()
