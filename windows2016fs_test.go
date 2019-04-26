@@ -356,7 +356,7 @@ var _ = Describe("Windows2016fs", func() {
 	})
 
 	It("can import a registry file", func() {
-		if tag == "1709" || tag == "2019" {
+		if tag == "1709" {
 			Skip(fmt.Sprintf("Not supported in %s", tag))
 		}
 
