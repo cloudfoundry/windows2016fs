@@ -1,5 +1,7 @@
 param (
-    [string]$Command="ginkgo"
+    [string]$Command="ginkgo",
+    [Parameter(Mandatory=$true)]
+    [switch]$ConfirmTheStemcellsAreUpToDate
 )
 
 $ErrorActionPreference = "Stop"
