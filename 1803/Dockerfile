@@ -43,6 +43,6 @@ RUN powershell.exe -command "Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControl
 # enable ODBC registry
 RUN powershell.exe -command \
   $acl = Get-Acl -Path HKLM:\SOFTWARE\ODBC; \
-  $rule = New-Object System.Security.AccessControl.RegistryAccessRule('vcap', 'FullControl', 'ContainerInherit', 'None', 'Allow') ; \
+  $rule = New-Object System.Security.AccessControl.RegistryAccessRule('vcap', 'WriteKey', 'ContainerInherit', 'None', 'Allow') ; \
   $acl.SetAccessRule($rule); \
   Set-Acl -AclObject $acl -Path HKLM:\SOFTWARE\ODBC;
