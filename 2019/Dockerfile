@@ -40,6 +40,10 @@ RUN powershell.exe -command Set-Service -Name lmhosts -StartupType Manual
 # enable automatic start of DNS cache to support FQDNs for net use
 RUN powershell.exe -command "Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\dnscache' -Name Start -Value 2"
 
+# 10s of graceful shutdown time
+RUN reg add hklm\system\currentcontrolset\services\cexecsvc /v ProcessShutdownTimeoutSeconds /t REG_DWORD /d 10 && \
+    reg add hklm\system\currentcontrolset\control /v WaitToKillServiceTimeout /t REG_SZ /d 10000 /f
+
 # enable ODBC registry
 RUN powershell.exe -command \ 
   $acl = Get-Acl HKLM:\SOFTWARE\ODBC; \
