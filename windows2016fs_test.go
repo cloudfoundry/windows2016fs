@@ -248,6 +248,14 @@ var _ = Describe("Windows2016fs", func() {
 					{Name: "WinDefend", StartType: 4},
 					{},
 				},
+				"sppsvc": {
+					{Name: "sppsvc", StartType: 2},
+					{Name: "sppsvc", StartType: 4},
+				},
+				"clipsvc": {
+					{Name: "ClipSVC", StartType: 3},
+					{Name: "ClipSVC", StartType: 4},
+				},
 			}
 		case "2019":
 			expectedDiffFromBaseline = map[string][]serviceState{
