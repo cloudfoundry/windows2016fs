@@ -390,4 +390,38 @@ var _ = Describe("Windows2016fs", func() {
 
 		Expect(string(session.Err.Contents())).To(ContainSubstring("The operation completed successfully."))
 	})
+
+	It("contains Visual C++ restributable for 2010", func() {
+		if tag == "1709" {
+			Skip(fmt.Sprintf("Not supported in %s", tag))
+		}
+
+		buildTestDockerImage(imageNameAndTag, testImageNameAndTag)
+
+		command := exec.Command(
+			"docker",
+			"run",
+			"--rm",
+			testImageNameAndTag,
+			"powershell", `Get-ChildItem C:\Windows\System32\msvcr100.dll`,
+		)
+		session, err := Start(command, GinkgoWriter, GinkgoWriter)
+		Expect(err).ToNot(HaveOccurred())
+		Eventually(session, 30*time.Second).Should(Exit(0))
+	})
+
+	It("contains Visual C++ restributable for 2015+", func() {
+		buildTestDockerImage(imageNameAndTag, testImageNameAndTag)
+
+		command := exec.Command(
+			"docker",
+			"run",
+			"--rm",
+			testImageNameAndTag,
+			"powershell", `Get-ChildItem C:\Windows\System32\vcruntime140.dll`,
+		)
+		session, err := Start(command, GinkgoWriter, GinkgoWriter)
+		Expect(err).ToNot(HaveOccurred())
+		Eventually(session, 30*time.Second).Should(Exit(0))
+	})
 })

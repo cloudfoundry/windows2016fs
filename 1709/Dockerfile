@@ -21,9 +21,9 @@ COPY tar-*.exe /Windows/tar.exe
 COPY rewrite*.msi /Windows/rewrite.msi
 RUN msiexec /i C:\Windows\rewrite.msi /qn /quiet
 
-COPY vc_redist.x64.exe /vc_redist.x64.exe
-RUN cmd.exe /s /c "c:\vc_redist.x64.exe /install /passive /norestart /wait"
-RUN del /F "c:\vc_redist.x64.exe"
+COPY vcredist-ucrt.x64.exe /vcredist-ucrt.x64.exe
+RUN cmd.exe /s /c "c:\vcredist-ucrt.x64.exe /install /passive /norestart /wait"
+RUN del /F "c:\vcredist-ucrt.x64.exe"
 
 RUN powershell.exe -command "remove-windowsfeature -name 'windows-defender-features'"
 
