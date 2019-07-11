@@ -151,11 +151,15 @@ var _ = Describe("Windows2016fs", func() {
 		shareFqdn = lookupEnv("SHARE_FQDN")
 		shareIP = lookupEnv("SHARE_IP")
 		tag = lookupEnv("VERSION_TAG")
-		imageNameAndTag = fmt.Sprintf("windows2016fs-candidate:%s", tag)
 		testImageNameAndTag = fmt.Sprintf("windows2016fs-test:%s", tag)
-		depDir := lookupEnv("DEPENDENCIES_DIR")
 
-		buildDockerImage(tempDirPath, depDir, imageNameAndTag, tag)
+		if os.Getenv("TEST_CANDIDATE_IMAGE") == "" {
+			depDir := lookupEnv("DEPENDENCIES_DIR")
+			imageNameAndTag = fmt.Sprintf("windows2016fs-candidate:%s", tag)
+			buildDockerImage(tempDirPath, depDir, imageNameAndTag, tag)
+		} else {
+			imageNameAndTag = os.Getenv("TEST_CANDIDATE_IMAGE")
+		}
 	})
 
 	It("can write to an IP-based smb share", func() {
