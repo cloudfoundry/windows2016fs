@@ -15,12 +15,14 @@ import (
 	. "github.com/onsi/gomega"
 	. "github.com/onsi/gomega/gexec"
 )
-
+var(
+	SESSION_TIMEOUT = 10*time.Minute
+)
 func expectCommand(executable string, params ...string) {
 	command := exec.Command(executable, params...)
 	session, err := Start(command, GinkgoWriter, GinkgoWriter)
 	Expect(err).ToNot(HaveOccurred())
-	Eventually(session, 10*time.Minute).Should(Exit(0))
+	Eventually(session, SESSION_TIMEOUT).Should(Exit(0))
 }
 
 func lookupEnv(envName string) string {
@@ -80,7 +82,7 @@ func expectMountSMBImage(shareUnc, shareUsername, sharePassword, tempDirPath, im
 	session, err := Start(command, GinkgoWriter, GinkgoWriter)
 	Expect(err).ToNot(HaveOccurred())
 
-	Eventually(session, 5*time.Minute).Should(Exit(0))
+	Eventually(session, SESSION_TIMEOUT).Should(Exit(0))
 
 	smbMapping := string(session.Out.Contents())
 	Expect(smbMapping).To(ContainSubstring("T:"))
@@ -213,7 +215,7 @@ var _ = Describe("Windows2016fs", func() {
 
 		session, err := Start(command, GinkgoWriter, GinkgoWriter)
 		Expect(err).ToNot(HaveOccurred())
-		Eventually(session, 30*time.Second).Should(Exit(0))
+		Eventually(session, SESSION_TIMEOUT).Should(Exit(0))
 
 		actualServicesPowershellJSON := session.Out.Contents()
 
@@ -346,7 +348,7 @@ var _ = Describe("Windows2016fs", func() {
 
 		session, err := Start(command, GinkgoWriter, GinkgoWriter)
 		Expect(err).ToNot(HaveOccurred())
-		Eventually(session, 30*time.Second).Should(Exit(0))
+		Eventually(session, SESSION_TIMEOUT).Should(Exit(0))
 
 		actualFrameworkRelease := strings.TrimSpace(string(session.Out.Contents()))
 
@@ -390,7 +392,7 @@ var _ = Describe("Windows2016fs", func() {
 		session, err := Start(command, GinkgoWriter, GinkgoWriter)
 		Expect(err).ToNot(HaveOccurred())
 
-		Eventually(session, 30*time.Second).Should(Exit(0))
+		Eventually(session, SESSION_TIMEOUT).Should(Exit(0))
 
 		Expect(string(session.Err.Contents())).To(ContainSubstring("The operation completed successfully."))
 	})
@@ -402,30 +404,24 @@ var _ = Describe("Windows2016fs", func() {
 
 		buildTestDockerImage(imageNameAndTag, testImageNameAndTag)
 
-		command := exec.Command(
+		expectCommand(
 			"docker",
 			"run",
 			"--rm",
 			testImageNameAndTag,
 			"powershell", `Get-ChildItem C:\Windows\System32\msvcr100.dll`,
 		)
-		session, err := Start(command, GinkgoWriter, GinkgoWriter)
-		Expect(err).ToNot(HaveOccurred())
-		Eventually(session, 30*time.Second).Should(Exit(0))
 	})
 
 	It("contains Visual C++ restributable for 2015+", func() {
 		buildTestDockerImage(imageNameAndTag, testImageNameAndTag)
 
-		command := exec.Command(
+		expectCommand(
 			"docker",
 			"run",
 			"--rm",
 			testImageNameAndTag,
 			"powershell", `Get-ChildItem C:\Windows\System32\vcruntime140.dll`,
 		)
-		session, err := Start(command, GinkgoWriter, GinkgoWriter)
-		Expect(err).ToNot(HaveOccurred())
-		Eventually(session, 30*time.Second).Should(Exit(0))
 	})
 })
