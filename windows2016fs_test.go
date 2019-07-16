@@ -226,8 +226,6 @@ var _ = Describe("Windows2016fs", func() {
 		var expectedDiffFromBaseline map[string][]serviceState
 
 		switch tag {
-		case "1709":
-			expectedDiffFromBaseline = map[string][]serviceState{}
 		case "1803":
 			expectedDiffFromBaseline = map[string][]serviceState{
 				"sense": {
@@ -356,8 +354,6 @@ var _ = Describe("Windows2016fs", func() {
 
 		// https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/release-keys-and-os-versions
 		switch tag {
-		case "1709":
-			expectedFrameworkRelease = "461308" //Framwork version 4.7.1 (link: "...Windows Server, version 1709")
 		case "1803":
 			expectedFrameworkRelease = "461808" //Framwork version 4.7.2 (link: "...Windows Server, version 1803")
 		case "2019":
@@ -370,10 +366,6 @@ var _ = Describe("Windows2016fs", func() {
 	})
 
 	It("can import a registry file", func() {
-		if tag == "1709" {
-			Skip(fmt.Sprintf("Not supported in %s", tag))
-		}
-
 		buildTestDockerImage(imageNameAndTag, testImageNameAndTag)
 
 		command := exec.Command(
@@ -398,10 +390,6 @@ var _ = Describe("Windows2016fs", func() {
 	})
 
 	It("contains Visual C++ restributable for 2010", func() {
-		if tag == "1709" {
-			Skip(fmt.Sprintf("Not supported in %s", tag))
-		}
-
 		buildTestDockerImage(imageNameAndTag, testImageNameAndTag)
 
 		expectCommand(

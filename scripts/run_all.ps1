@@ -5,9 +5,6 @@ param (
 )
 
 $ErrorActionPreference = "Stop"
-Write-Output "Running 1709"
-. .\.envrc-1709.ps1 
-Powershell $Command
 
 Write-Output "Running 1803"
 . .\.envrc-1803.ps1
