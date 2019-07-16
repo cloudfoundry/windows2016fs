@@ -1,0 +1,3486 @@
+[
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Application Host Helper Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "AppHostSvc",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "AppHostSvc",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Application Identity",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "AppIDSvc",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "AppIDSvc",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Application Management",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "AppMgmt",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "AppMgmt",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "AppX Deployment Service (AppXSVC)",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "AppXSvc",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "AppXSvc",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "ASP.NET State Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "aspnet_state",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  16,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "aspnet_state",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Base Filtering Engine",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "BFE",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  null,
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "BFE",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Background Intelligent Transfer Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "BITS",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "BITS",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Certificate Propagation",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "CertPropSvc",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  null,
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "CertPropSvc",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  true,
+        "DisplayName":  "Container Execution Agent",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "cexecsvc",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  4,
+        "ServiceType":  16,
+        "StartType":  2,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "cexecsvc",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Client License Service (ClipSVC)",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "ClipSVC",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  null,
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "ClipSVC",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "COM+ System Application",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "COMSysApp",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  16,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "COMSysApp",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "CoreMessagingRegistrar",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "CoreMessagingRegistrar",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  null,
+        "Status":  4,
+        "ServiceType":  32,
+        "StartType":  2,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "CoreMessagingRegistrar",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  true,
+        "CanStop":  true,
+        "DisplayName":  "Cryptographic Services",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "CryptSvc",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  4,
+        "ServiceType":  32,
+        "StartType":  2,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "CryptSvc",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "DCOM Server Process Launcher",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "DcomLaunch",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  null,
+        "Status":  4,
+        "ServiceType":  32,
+        "StartType":  2,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "DcomLaunch",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Optimize drives",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "defragsvc",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  16,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "defragsvc",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Device Install Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "DeviceInstall",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "DeviceInstall",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "DHCP Client",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "Dhcp",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "Dhcp",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Microsoft (R) Diagnostics Hub Standard Collector Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "diagnosticshub.standardcollector.service",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  16,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "diagnosticshub.standardcollector.service",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Connected User Experiences and Telemetry",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "DiagTrack",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  16,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "DiagTrack",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "DNS Client",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "Dnscache",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  null,
+        "Status":  4,
+        "ServiceType":  32,
+        "StartType":  2,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "Dnscache",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Delivery Optimization",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "DoSvc",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "DoSvc",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Diagnostic Policy Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "DPS",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  null,
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "DPS",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Extensible Authentication Protocol",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "EapHost",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "EapHost",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Encrypting File System (EFS)",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "EFS",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  null,
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "EFS",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  true,
+        "CanStop":  true,
+        "DisplayName":  "Windows Event Log",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "EventLog",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  4,
+        "ServiceType":  32,
+        "StartType":  2,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "EventLog",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  true,
+        "DisplayName":  "COM+ Event System",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "EventSystem",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  4,
+        "ServiceType":  32,
+        "StartType":  2,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "EventSystem",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Function Discovery Provider Host",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "fdPHost",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "fdPHost",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Windows Font Cache Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "FontCache",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "FontCache",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  true,
+        "DisplayName":  "Group Policy Client",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "gpsvc",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  null,
+        "Status":  4,
+        "ServiceType":  32,
+        "StartType":  2,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "gpsvc",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Human Interface Device Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "hidserv",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "hidserv",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "HV Host Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "HvHost",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "HvHost",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "IKE and AuthIP IPsec Keying Modules",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "IKEEXT",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "IKEEXT",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "IP Helper",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "iphlpsvc",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  2,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "iphlpsvc",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "CNG Key Isolation",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "KeyIso",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "KeyIso",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "KDC Proxy Server service (KPS)",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "KPSSVC",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "KPSSVC",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "KtmRm for Distributed Transaction Coordinator",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "KtmRm",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "KtmRm",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Server",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "LanmanServer",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  2,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "LanmanServer",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  true,
+        "CanShutdown":  false,
+        "CanStop":  true,
+        "DisplayName":  "Workstation",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "LanmanWorkstation",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  4,
+        "ServiceType":  32,
+        "StartType":  2,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "LanmanWorkstation",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Link-Layer Topology Discovery Mapper",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "lltdsvc",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "lltdsvc",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "TCP/IP NetBIOS Helper",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "lmhosts",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "lmhosts",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Local Session Manager",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "LSM",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  null,
+        "Status":  4,
+        "ServiceType":  32,
+        "StartType":  2,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "LSM",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Windows Defender Firewall",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "mpssvc",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "mpssvc",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Distributed Transaction Coordinator",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "MSDTC",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  null,
+        "Status":  1,
+        "ServiceType":  16,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "MSDTC",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Microsoft iSCSI Initiator Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "MSiSCSI",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "MSiSCSI",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Windows Installer",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "msiserver",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  16,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "msiserver",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Network Connectivity Assistant",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "NcaSvc",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "NcaSvc",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Netlogon",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "Netlogon",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "Netlogon",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Network List Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "netprofm",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "netprofm",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Network Setup Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "NetSetupSvc",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "NetSetupSvc",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Net.Tcp Port Sharing Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "NetTcpPortSharing",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "NetTcpPortSharing",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Network Location Awareness",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "NlaSvc",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "NlaSvc",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  true,
+        "DisplayName":  "Network Store Interface Service",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "nsi",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  4,
+        "ServiceType":  32,
+        "StartType":  2,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "nsi",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Performance Counter DLL Host",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "PerfHost",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  16,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "PerfHost",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Performance Logs \u0026 Alerts",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "pla",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "pla",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Plug and Play",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "PlugPlay",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "PlugPlay",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "IPsec Policy Agent",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "PolicyAgent",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "PolicyAgent",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Power",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "Power",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "Power",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  true,
+        "CanStop":  true,
+        "DisplayName":  "User Profile Service",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "ProfSvc",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  4,
+        "ServiceType":  32,
+        "StartType":  2,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "ProfSvc",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Remote Access Connection Manager",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "RasMan",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "RasMan",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Routing and Remote Access",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "RemoteAccess",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "RemoteAccess",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Remote Registry",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "RemoteRegistry",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "RemoteRegistry",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "RPC Endpoint Mapper",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "RpcEptMapper",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  null,
+        "Status":  4,
+        "ServiceType":  32,
+        "StartType":  2,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "RpcEptMapper",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Remote Procedure Call (RPC)",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "RpcSs",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  null,
+        "Status":  4,
+        "ServiceType":  32,
+        "StartType":  2,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "RpcSs",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Resultant Set of Policy Provider",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "RSoPProv",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "RSoPProv",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Special Administration Console Helper",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "sacsvr",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "sacsvr",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Security Accounts Manager",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "SamSs",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  4,
+        "ServiceType":  32,
+        "StartType":  2,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "SamSs",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Smart Card",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "SCardSvr",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  null,
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "SCardSvr",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Smart Card Device Enumeration Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "ScDeviceEnum",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  null,
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "ScDeviceEnum",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  true,
+        "CanStop":  true,
+        "DisplayName":  "Task Scheduler",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "Schedule",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  null,
+        "Status":  4,
+        "ServiceType":  32,
+        "StartType":  2,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "Schedule",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Smart Card Removal Policy",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "SCPolicySvc",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  null,
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "SCPolicySvc",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Secondary Logon",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "seclogon",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "seclogon",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  true,
+        "DisplayName":  "System Event Notification Service",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "SENS",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  4,
+        "ServiceType":  32,
+        "StartType":  2,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "SENS",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Windows Defender Advanced Threat Protection Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "Sense",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  null,
+        "Status":  1,
+        "ServiceType":  16,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "Sense",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Remote Desktop Configuration",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "SessionEnv",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "SessionEnv",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Internet Connection Sharing (ICS)",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "SharedAccess",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "SharedAccess",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Microsoft Storage Spaces SMP",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "smphost",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  16,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "smphost",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "SNMP Trap",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "SNMPTRAP",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  16,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "SNMPTRAP",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Print Spooler",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "Spooler",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  272,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "Spooler",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Software Protection",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "sppsvc",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  null,
+        "Status":  1,
+        "ServiceType":  16,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "sppsvc",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "OpenSSH Authentication Agent",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "ssh-agent",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  16,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "ssh-agent",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Secure Socket Tunneling Protocol Service",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "SstpSvc",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "SstpSvc",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "State Repository Service",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "StateRepository",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "StateRepository",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Spot Verifier",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "svsvc",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "svsvc",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Microsoft Software Shadow Copy Provider",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "swprv",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  16,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "swprv",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Superfetch",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "SysMain",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "SysMain",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  true,
+        "DisplayName":  "System Events Broker",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "SystemEventsBroker",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  null,
+        "Status":  4,
+        "ServiceType":  32,
+        "StartType":  2,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "SystemEventsBroker",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Remote Desktop Services",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "TermService",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "TermService",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Storage Tiers Management",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "TieringEngineService",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  16,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "TieringEngineService",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  true,
+        "DisplayName":  "Time Broker",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "TimeBrokerSvc",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  null,
+        "Status":  4,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "TimeBrokerSvc",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Windows Modules Installer",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "TrustedInstaller",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  null,
+        "Status":  1,
+        "ServiceType":  16,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "TrustedInstaller",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "User Access Logging Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "UALSVC",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "UALSVC",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Remote Desktop Services UserMode Port Redirector",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "UmRdpService",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "UmRdpService",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  true,
+        "DisplayName":  "User Manager",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "UserManager",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  4,
+        "ServiceType":  32,
+        "StartType":  2,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "UserManager",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Update Orchestrator Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "UsoSvc",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "UsoSvc",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Credential Manager",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "VaultSvc",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "VaultSvc",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Virtual Disk",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "vds",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  16,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "vds",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Hyper-V Guest Service Interface",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "vmicguestinterface",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "vmicguestinterface",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Hyper-V Heartbeat Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "vmicheartbeat",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "vmicheartbeat",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Hyper-V Data Exchange Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "vmickvpexchange",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "vmickvpexchange",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Hyper-V Remote Desktop Virtualization Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "vmicrdv",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "vmicrdv",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Hyper-V Guest Shutdown Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "vmicshutdown",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "vmicshutdown",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Hyper-V Time Synchronization Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "vmictimesync",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "vmictimesync",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Hyper-V PowerShell Direct Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "vmicvmsession",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "vmicvmsession",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Hyper-V Volume Shadow Copy Requestor",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "vmicvss",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "vmicvss",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Volume Shadow Copy",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "VSS",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  16,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "VSS",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Windows Time",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "W32Time",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "W32Time",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "W3C Logging Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "w3logsvc",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "w3logsvc",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "World Wide Web Publishing Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "W3SVC",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "W3SVC",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Windows Process Activation Service",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "WAS",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "WAS",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Diagnostic Service Host",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "WdiServiceHost",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  null,
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "WdiServiceHost",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Diagnostic System Host",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "WdiSystemHost",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  null,
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "WdiSystemHost",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Windows Event Collector",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "Wecsvc",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "Wecsvc",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Windows Error Reporting Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "WerSvc",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  16,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "WerSvc",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "WinHTTP Web Proxy Auto-Discovery Service",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "WinHttpAutoProxySvc",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  null,
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "WinHttpAutoProxySvc",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  true,
+        "CanShutdown":  true,
+        "CanStop":  true,
+        "DisplayName":  "Windows Management Instrumentation",
+        "DependentServices":  [
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController",
+                                  "System.ServiceProcess.ServiceController"
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "Winmgmt",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  4,
+        "ServiceType":  32,
+        "StartType":  2,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "Winmgmt",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Windows Remote Management (WS-Management)",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "WinRM",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController",
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "WinRM",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController",
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Windows Insider Service",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "wisvc",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "wisvc",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "WMI Performance Adapter",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "wmiApSrv",
+        "ServicesDependedOn":  [
+
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  16,
+        "StartType":  3,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "wmiApSrv",
+        "RequiredServices":  [
+
+                             ]
+    },
+    {
+        "CanPauseAndContinue":  false,
+        "CanShutdown":  false,
+        "CanStop":  false,
+        "DisplayName":  "Windows Update",
+        "DependentServices":  [
+
+                              ],
+        "MachineName":  ".",
+        "ServiceName":  "wuauserv",
+        "ServicesDependedOn":  [
+                                   "System.ServiceProcess.ServiceController"
+                               ],
+        "ServiceHandle":  {
+                              "IsInvalid":  false,
+                              "IsClosed":  false
+                          },
+        "Status":  1,
+        "ServiceType":  32,
+        "StartType":  4,
+        "Site":  null,
+        "Container":  null,
+        "Name":  "wuauserv",
+        "RequiredServices":  [
+                                 "System.ServiceProcess.ServiceController"
+                             ]
+    }
+]
