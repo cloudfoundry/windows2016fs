@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/windows/servercore:1809
+FROM mcr.microsoft.com/windows/servercore:1809-KB4493509
 
 RUN cmd.exe /C net users /ADD vcap /passwordreq:no /expires:never && runas /user:vcap whoami
 RUN cmd.exe /C net accounts /maxpwage:UNLIMITED
@@ -23,25 +23,14 @@ COPY vc_redist.x64.exe /vc_redist.x64.exe
 RUN cmd.exe /s /c "c:\vc_redist.x64.exe /install /passive /norestart /wait"
 RUN del /F "c:\vc_redist.x64.exe"
 
-RUN powershell.exe -command "remove-windowsfeature -name 'windows-defender'"
-
-# disable common unneeded services
 RUN powershell.exe -command \
+  remove-windowsfeature -name 'windows-defender'; \
   $svs=('AppHostSvc', 'MSDTC', 'TermService', 'WAS', 'dhcp', 'diagtrack', 'w3svc', 'winrm', 'RemoteRegistry'); \
-  foreach ($name in $svs) { Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\$name" -Name Start -Value 4 }
-
-# disable 2019 specific additions/changes
-RUN powershell.exe -command \
+  foreach ($name in $svs) { Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\$name" -Name Start -Value 4 }; \
   $svs=('Sense', 'SCardSvr', 'UsoSvc', 'SysMain', 'SgrmBroker', 'AppReadiness'); \
-  foreach ($name in $svs) { Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\$name" -Name Start -Value 4 }
-
-RUN powershell.exe -command Set-Service -Name lmhosts -StartupType Manual
-
-# enable automatic start of DNS cache to support FQDNs for net use
-RUN powershell.exe -command "Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\dnscache' -Name Start -Value 2"
-
-# enable ODBC registry
-RUN powershell.exe -command \ 
+  foreach ($name in $svs) { Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\$name" -Name Start -Value 4 }; \
+  Set-Service -Name lmhosts -StartupType Manual; \
+  Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\dnscache' -Name Start -Value 2; \
   $acl = Get-Acl HKLM:\SOFTWARE\ODBC; \
   $rule = New-Object System.Security.AccessControl.RegistryAccessRule('vcap', 'WriteKey', 'ContainerInherit', 'None', 'Allow') ; \
   $acl.SetAccessRule($rule); \
