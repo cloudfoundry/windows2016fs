@@ -27,6 +27,13 @@ COPY vcredist-ucrt.x64.exe /vcredist-ucrt.x64.exe
 RUN cmd.exe /s /c "c:\vcredist-ucrt.x64.exe /install /passive /norestart /wait"
 RUN del /F "c:\vcredist-ucrt.x64.exe"
 
+# Install .NET Framework 4.8 (1809 ships with 4.7)
+COPY dotnet-48-installer.exe /dotnet-48-installer.exe
+RUN cmd.exe /s /c "c:\dotnet-48-installer.exe /q"
+RUN del /F "c:\dotnet-48-installer.exe"
+
+RUN powershell.exe Remove-Item -Force -Recurse ${Env:TEMP}\*
+
 RUN powershell.exe -command "remove-windowsfeature -name 'windows-defender'"
 
 # disable common unneeded services

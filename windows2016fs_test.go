@@ -219,7 +219,7 @@ var _ = Describe("Windows2016fs", func() {
 		case "1803":
 			expectedFrameworkRelease = "461808" //Framwork version 4.7.2 (link: "...Windows Server, version 1803")
 		case "2019":
-			expectedFrameworkRelease = "461814" //Framwork version 4.7.2 (link: "1803...all other Windows operating systems")
+			expectedFrameworkRelease = "528049" //Framework version 4.8
 		default:
 			Fail(fmt.Sprintf("unknown tag: %+s", tag))
 		}
