@@ -19,9 +19,17 @@ RUN del /F C:\git-setup.exe
 COPY rewrite*.msi /Windows/rewrite.msi
 RUN msiexec /i C:\Windows\rewrite.msi /qn /quiet
 
+COPY vcredist-2010.x86.exe /vcredist-2010.x86.exe
+RUN cmd.exe /s /c "c:\vcredist-2010.x86.exe /install /passive /norestart /wait"
+RUN del /F "c:\vcredist-2010.x86.exe"
+
 COPY vcredist-2010.x64.exe /vcredist-2010.x64.exe
 RUN cmd.exe /s /c "c:\vcredist-2010.x64.exe /install /passive /norestart /wait"
 RUN del /F "c:\vcredist-2010.x64.exe"
+
+COPY vcredist-ucrt.x86.exe /vcredist-ucrt.x86.exe
+RUN cmd.exe /s /c "c:\vcredist-ucrt.x86.exe /install /passive /norestart /wait"
+RUN del /F "c:\vcredist-ucrt.x86.exe"
 
 COPY vcredist-ucrt.x64.exe /vcredist-ucrt.x64.exe
 RUN cmd.exe /s /c "c:\vcredist-ucrt.x64.exe /install /passive /norestart /wait"
