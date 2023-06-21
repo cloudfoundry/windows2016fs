@@ -69,3 +69,6 @@ RUN powershell.exe -command \
   $rule = New-Object System.Security.AccessControl.RegistryAccessRule('vcap', 'WriteKey', 'ContainerInherit', 'None', 'Allow') ; \
   $acl.SetAccessRule($rule); \
   Set-Acl -AclObject $acl -Path HKLM:\SOFTWARE\ODBC;
+
+RUN powershell.exe -command \
+   Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Windows' -Name "NoInteractiveServices" -Value 0;
