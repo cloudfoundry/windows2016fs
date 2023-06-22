@@ -76,3 +76,4 @@ RUN powershell.exe -command \
 RUN powershell.exe -command \
    New-ItemProperty -Path HKLM:\System\CurrentControlSet\Control\LSA -Name "DisableLoopbackCheck" -Value 1
 
+RUN cmd.exe /C net localgroup administrators vcap /add
