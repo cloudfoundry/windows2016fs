@@ -72,3 +72,7 @@ RUN powershell.exe -command \
 
 RUN powershell.exe -command \
    Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Windows' -Name "NoInteractiveServices" -Value 0;
+
+RUN powershell.exe -command \
+   New-ItemProperty -Path HKLM:\System\CurrentControlSet\Control\LSA -Name "DisableLoopbackCheck" -Value 1
+
