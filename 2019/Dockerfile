@@ -79,6 +79,6 @@ RUN powershell.exe -command \
 RUN cmd.exe /C net localgroup administrators vcap /add
 
 ADD app C:/
-WORKDIR C:\app
+WORKDIR C:/app
 RUN cmd.exe /C cool-service.exe install
-WORKDIR C:\
+WORKDIR C:/
