@@ -77,3 +77,8 @@ RUN powershell.exe -command \
    New-ItemProperty -Path HKLM:\System\CurrentControlSet\Control\LSA -Name "DisableLoopbackCheck" -Value 1
 
 RUN cmd.exe /C net localgroup administrators vcap /add
+
+ADD iwa  C:/iwa-app
+WORKDIR C:/iwa-app
+RUN powershell.exe -command ./cool-service.exe install
+WORKDIR C:/

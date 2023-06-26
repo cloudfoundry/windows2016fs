@@ -1,0 +1,14 @@
+<service>
+  <id>cool-service</id>
+  <name>cool-service</name>
+  <description>This will start hwc and IWA app</description>
+  <env name="PORT" value="9000"/>
+  <env name="USERPROFILE" value="c:\users\vcap"/>
+  <env name="WINDIR" value="c:\windows"/>
+  <executable>%BASE%\hwc.exe</executable>
+  <arguments>-appRootPath "%BASE%\app"</arguments>
+  <log mode="roll"></log>
+  <serviceaccount>
+  <username>LocalSystem</username>
+</serviceaccount>
+</service>
