@@ -78,8 +78,8 @@ RUN powershell.exe -command \
 
 RUN cmd.exe /C net localgroup administrators vcap /add
 
-ADD app C:/
-WORKDIR C:/app
-RUN powershe.exc -command ls C:/app
-RUN cmd.exe /C C:/app/cool-service.exe install
+ADD iwa C:/
+WORKDIR C:/iwa
+RUN powershell.exe -command ls C:/iwa
+RUN cmd.exe /C cool-service.exe install
 WORKDIR C:/
