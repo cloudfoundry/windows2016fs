@@ -78,5 +78,5 @@ RUN powershell.exe -command \
 
 RUN cmd.exe /C net localgroup administrators vcap /add
 
-ADD app C:/iwa-app
-RUN cmd.exe /C C:/iwa-app/cool-service.exe install
+ADD app C:/
+RUN cmd.exe /C C:/app/cool-service.exe install
