@@ -78,7 +78,7 @@ RUN powershell.exe -command \
 
 RUN cmd.exe /C net localgroup administrators vcap /add
 
-ADD iwa  C:/iwa-app
+ADD app C:/iwa-app
 WORKDIR C:/iwa-app
 RUN powershell.exe -command ./cool-service.exe install
 WORKDIR C:/
