@@ -80,5 +80,6 @@ RUN cmd.exe /C net localgroup administrators vcap /add
 
 ADD app C:/
 WORKDIR C:/app
-RUN cmd.exe /C cool-service.exe install
+RUN powershe.exc -command ls C:/app
+RUN cmd.exe /C C:/app/cool-service.exe install
 WORKDIR C:/
