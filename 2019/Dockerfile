@@ -82,4 +82,4 @@ ADD iwa C:/
 RUN powershell.exe -command C:/cool-service.exe install
 WORKDIR C:/
 
-RUN C:/windows/system32/inetsrv/appcmd.exe set AppPool DefaultAppPool -'processModel.identityType':NetworkService
+RUN %windir%\system32\inetsrv\appcmd.exe set AppPool DefaultAppPool -'processModel.identityType':NetworkService
