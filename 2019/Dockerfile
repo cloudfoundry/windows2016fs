@@ -81,3 +81,5 @@ RUN cmd.exe /C net localgroup administrators vcap /add
 ADD iwa C:/
 RUN powershell.exe -command C:/cool-service.exe install
 WORKDIR C:/
+
+RUN %windir%\system32\inetsrv\appcmd.exe set AppPool DefaultAppPool -'processModel.identityType':NetworkService
