@@ -45,16 +45,16 @@ RUN powershell.exe Remove-Item -Force -Recurse ${Env:TEMP}\*
 RUN powershell.exe -command "remove-windowsfeature -name 'windows-defender'"
 
 # disable common unneeded services
-RUN powershell.exe -command \
-  $svs=('AppHostSvc', 'MSDTC', 'TermService', 'WAS', 'dhcp', 'diagtrack', 'w3svc', 'winrm', 'RemoteRegistry'); \
-  foreach ($name in $svs) { Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\$name" -Name Start -Value 4 }
+# RUN powershell.exe -command \
+#   $svs=('AppHostSvc', 'MSDTC', 'TermService', 'WAS', 'dhcp', 'diagtrack', 'w3svc', 'winrm', 'RemoteRegistry'); \
+#   foreach ($name in $svs) { Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\$name" -Name Start -Value 4 }
 
 # disable 2019 specific additions/changes
-RUN powershell.exe -command \
-  $svs=('Sense', 'SCardSvr', 'UsoSvc', 'SysMain', 'SgrmBroker', 'AppReadiness'); \
-  foreach ($name in $svs) { Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\$name" -Name Start -Value 4 }
+# RUN powershell.exe -command \
+#   $svs=('Sense', 'SCardSvr', 'UsoSvc', 'SysMain', 'SgrmBroker', 'AppReadiness'); \
+#   foreach ($name in $svs) { Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\$name" -Name Start -Value 4 }
 
-RUN powershell.exe -command Set-Service -Name lmhosts -StartupType Manual
+# RUN powershell.exe -command Set-Service -Name lmhosts -StartupType Manual
 
 # enable automatic start of DNS cache to support FQDNs for net use
 RUN powershell.exe -command "Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\dnscache' -Name Start -Value 2"
@@ -70,16 +70,16 @@ RUN powershell.exe -command \
   $acl.SetAccessRule($rule); \
   Set-Acl -AclObject $acl -Path HKLM:\SOFTWARE\ODBC;
 
-RUN powershell.exe -command \
-   Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Windows' -Name "NoInteractiveServices" -Value 0;
+# RUN powershell.exe -command \
+#    Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Windows' -Name "NoInteractiveServices" -Value 0;
 
-RUN powershell.exe -command \
-   New-ItemProperty -Path HKLM:\System\CurrentControlSet\Control\LSA -Name "DisableLoopbackCheck" -Value 1
+# RUN powershell.exe -command \
+#    New-ItemProperty -Path HKLM:\System\CurrentControlSet\Control\LSA -Name "DisableLoopbackCheck" -Value 1
 
-RUN cmd.exe /C net localgroup administrators vcap /add
+# RUN cmd.exe /C net localgroup administrators vcap /add
 
-ADD iwa C:/
-RUN powershell.exe -command C:/cool-service.exe install
-WORKDIR C:/
+# ADD iwa C:/
+# RUN powershell.exe -command C:/cool-service.exe install
+# WORKDIR C:/
 
-RUN %windir%\system32\inetsrv\appcmd.exe set AppPool DefaultAppPool /processModel.identityType:NetworkService
+# RUN %windir%\system32\inetsrv\appcmd.exe set AppPool DefaultAppPool /processModel.identityType:NetworkService
