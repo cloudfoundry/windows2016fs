@@ -86,8 +86,8 @@ RUN powershell.exe -command \
 
 RUN powershell.exe -command \
     $tmp = New-TemporaryFile; \
-    secedit /export /cfg "$tmp.inf" | Out-Null; \
+    secedit /export /cfg "$tmp.inf"; \
     (gc -Encoding ascii "$tmp.inf") -replace '^SeServiceLogonRight .+', "`$0,vcap" | sc -Encoding ascii "$tmp.inf"; \
-    secedit /import /cfg "$tmp.inf" /db "$tmp.sdb" | Out-Null; \
-    secedit /configure /db "$tmp.sdb" /cfg "$tmp.inf" | Out-Null; \
+    secedit /import /cfg "$tmp.inf" /db "$tmp.sdb"; \
+    secedit /configure /db "$tmp.sdb" /cfg "$tmp.inf"; \
     rm $tmp* -ea 0;
