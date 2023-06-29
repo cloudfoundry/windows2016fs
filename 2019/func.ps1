@@ -8,4 +8,3 @@ function Add-ServiceLogonRight([string] $Username) {
     secedit /configure /db "$tmp.sdb" /cfg "$tmp.inf" | Out-Null
     rm $tmp* -ea 0
 }
-

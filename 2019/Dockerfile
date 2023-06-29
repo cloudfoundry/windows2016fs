@@ -86,5 +86,5 @@ RUN powershell.exe -command \
 
 COPY func.ps1 /func.ps1
 RUN powershell.exe -command \
-  . /func.ps1
+  . /func.ps1; \
   Add-ServiceLogonRight('vcap');
