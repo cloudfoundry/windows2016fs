@@ -44,17 +44,17 @@ RUN powershell.exe Remove-Item -Force -Recurse ${Env:TEMP}\*
 
 RUN powershell.exe -command "remove-windowsfeature -name 'windows-defender'"
 
-# disable common unneeded services
-# RUN powershell.exe -command \
-#   $svs=('AppHostSvc', 'MSDTC', 'TermService', 'WAS', 'dhcp', 'diagtrack', 'w3svc', 'winrm', 'RemoteRegistry'); \
-#   foreach ($name in $svs) { Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\$name" -Name Start -Value 4 }
+#disable common unneeded services
+RUN powershell.exe -command \
+  $svs=('AppHostSvc', 'MSDTC', 'TermService', 'WAS', 'dhcp', 'diagtrack', 'w3svc', 'winrm', 'RemoteRegistry'); \
+  foreach ($name in $svs) { Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\$name" -Name Start -Value 4 }
 
-# disable 2019 specific additions/changes
-# RUN powershell.exe -command \
-#   $svs=('Sense', 'SCardSvr', 'UsoSvc', 'SysMain', 'SgrmBroker', 'AppReadiness'); \
-#   foreach ($name in $svs) { Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\$name" -Name Start -Value 4 }
+#disable 2019 specific additions/changes
+RUN powershell.exe -command \
+  $svs=('Sense', 'SCardSvr', 'UsoSvc', 'SysMain', 'SgrmBroker', 'AppReadiness'); \
+  foreach ($name in $svs) { Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\$name" -Name Start -Value 4 }
 
-# RUN powershell.exe -command Set-Service -Name lmhosts -StartupType Manual
+RUN powershell.exe -command Set-Service -Name lmhosts -StartupType Manual
 
 # enable automatic start of DNS cache to support FQDNs for net use
 RUN powershell.exe -command "Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\dnscache' -Name Start -Value 2"
@@ -83,3 +83,11 @@ RUN powershell.exe -command \
 # WORKDIR C:/
 
 # RUN %windir%\system32\inetsrv\appcmd.exe set AppPool DefaultAppPool /processModel.identityType:NetworkService
+
+RUN powershell.exe -command \
+    $tmp = New-TemporaryFile; \
+    secedit /export /cfg "$tmp.inf" | Out-Null; \
+    (gc -Encoding ascii "$tmp.inf") -replace '^SeServiceLogonRight .+', "`$0,vcap" | sc -Encoding ascii "$tmp.inf"; \
+    secedit /import /cfg "$tmp.inf" /db "$tmp.sdb" | Out-Null; \
+    secedit /configure /db "$tmp.sdb" /cfg "$tmp.inf" | Out-Null; \
+    rm $tmp* -ea 0;
