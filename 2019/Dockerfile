@@ -87,4 +87,4 @@ RUN powershell.exe -command \
 COPY UserRights.psm1 /UserRights.psm1
 RUN powershell.exe -command \
   Import-Module /UserRights.psm1; \
-  Grant-UserRight -Account "vcap" -Right SeAssignPrimaryTokenPrivilege,SeAuditPrivilege,SeBatchLogonRight,SeChangeNotifyPrivilege,SeCreateGlobalPrivilege,SeImpersonatePrivilege,SeIncreaseQuotaPrivilege,SeInteractiveLogonRight,SeNetworkLogonRight,SeProfileSingleProcessPrivilege,SeSecurityPrivilege,SeServiceLogonRight,SeSystemtimePrivilege,SeTakeOwnershipPrivilege,
+  Grant-UserRight -Account "vcap" -Right SeAssignPrimaryTokenPrivilege,SeAuditPrivilege,SeBatchLogonRight,SeChangeNotifyPrivilege,SeCreateGlobalPrivilege,SeImpersonatePrivilege,SeIncreaseQuotaPrivilege,SeInteractiveLogonRight,SeNetworkLogonRight,SeProfileSingleProcessPrivilege,SeSecurityPrivilege,SeServiceLogonRight,SeSystemtimePrivilege,SeTakeOwnershipPrivilege
