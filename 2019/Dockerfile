@@ -2,9 +2,6 @@ FROM mcr.microsoft.com/windows/servercore:1809
 
 RUN cmd.exe /C net users /ADD vcap /passwordreq:no /expires:never && runas /user:vcap whoami
 RUN cmd.exe /C net accounts /maxpwage:UNLIMITED
-RUN cmd.exe /C net localgroup administrators vcap /add
-
-USER vcap
 
 RUN powershell.exe -Command \
   $ErrorActionPreference = 'Stop'; \
@@ -87,12 +84,13 @@ RUN powershell.exe -command \
 
 # RUN %windir%\system32\inetsrv\appcmd.exe set AppPool DefaultAppPool /processModel.identityType:NetworkService
 
-# COPY UserRights.psm1 /UserRights.psm1
-# RUN powershell.exe -command \
-#   Import-Module /UserRights.psm1; \
-#   Grant-UserRight -Account "vcap" -Right SeAssignPrimaryTokenPrivilege,SeAuditPrivilege,SeBatchLogonRight,SeChangeNotifyPrivilege,SeCreateGlobalPrivilege,SeImpersonatePrivilege,SeIncreaseQuotaPrivilege,SeInteractiveLogonRight,SeNetworkLogonRight,SeProfileSingleProcessPrivilege,SeSecurityPrivilege,SeServiceLogonRight,SeSystemtimePrivilege,SeTakeOwnershipPrivilege
+COPY UserRights.psm1 /UserRights.psm1
 RUN powershell.exe -command \
-  Add-LocalGroupMember -Member 'NT Authority\NetworkService' -Group Users;
+  Import-Module /UserRights.psm1; \
+  Grant-UserRight -Account "vcap" -Right SeAssignPrimaryTokenPrivilege,SeAuditPrivilege,SeBatchLogonRight,SeChangeNotifyPrivilege,SeCreateGlobalPrivilege,SeImpersonatePrivilege,SeIncreaseQuotaPrivilege,SeInteractiveLogonRight,SeNetworkLogonRight,SeProfileSingleProcessPrivilege,SeSecurityPrivilege,SeServiceLogonRight,SeSystemtimePrivilege,SeTakeOwnershipPrivilege
+RUN cmd.exe /C gpupdate.exe /force
+# RUN powershell.exe -command \
+#   Add-LocalGroupMember -Member 'NT Authority\NetworkService' -Group Users;
 
-RUN cmd.exe /C net users /ADD wcap /passwordreq:no /expires:never && runas /user:wcap whoami
-RUN cmd.exe /C net localgroup administrators wcap /add
+# RUN cmd.exe /C net users /ADD wcap /passwordreq:no /expires:never && runas /user:wcap whoami
+# RUN cmd.exe /C net localgroup administrators wcap /add
