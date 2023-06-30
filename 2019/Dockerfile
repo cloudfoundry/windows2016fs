@@ -2,6 +2,8 @@ FROM mcr.microsoft.com/windows/servercore:1809
 
 RUN cmd.exe /C net users /ADD vcap /passwordreq:no /expires:never && runas /user:vcap whoami
 RUN cmd.exe /C net accounts /maxpwage:UNLIMITED
+RUN cmd.exe /C net localgroup administrators vcap /add
+
 USER vcap
 
 RUN powershell.exe -Command \
