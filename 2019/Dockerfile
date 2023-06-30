@@ -90,4 +90,4 @@ RUN powershell.exe -command \
 #   Grant-UserRight -Account "vcap" -Right SeAssignPrimaryTokenPrivilege,SeAuditPrivilege,SeBatchLogonRight,SeChangeNotifyPrivilege,SeCreateGlobalPrivilege,SeImpersonatePrivilege,SeIncreaseQuotaPrivilege,SeInteractiveLogonRight,SeNetworkLogonRight,SeProfileSingleProcessPrivilege,SeSecurityPrivilege,SeServiceLogonRight,SeSystemtimePrivilege,SeTakeOwnershipPrivilege
 # USER vcap
 RUN powershell.exe -command \
-  Add-LocalGroupMember -Member "NT Authority\NetworkService" -Group Users;
+  Add-LocalGroupMember -Member 'NT Authority\NetworkService' -Group Users;
