@@ -2,6 +2,7 @@ FROM mcr.microsoft.com/windows/servercore:1809
 
 RUN cmd.exe /C net users /ADD vcap /passwordreq:no /expires:never && runas /user:vcap whoami
 RUN cmd.exe /C net accounts /maxpwage:UNLIMITED
+USER vcap
 
 RUN powershell.exe -Command \
   $ErrorActionPreference = 'Stop'; \
@@ -88,7 +89,6 @@ RUN powershell.exe -command \
 # RUN powershell.exe -command \
 #   Import-Module /UserRights.psm1; \
 #   Grant-UserRight -Account "vcap" -Right SeAssignPrimaryTokenPrivilege,SeAuditPrivilege,SeBatchLogonRight,SeChangeNotifyPrivilege,SeCreateGlobalPrivilege,SeImpersonatePrivilege,SeIncreaseQuotaPrivilege,SeInteractiveLogonRight,SeNetworkLogonRight,SeProfileSingleProcessPrivilege,SeSecurityPrivilege,SeServiceLogonRight,SeSystemtimePrivilege,SeTakeOwnershipPrivilege
-# USER vcap
 RUN powershell.exe -command \
   Add-LocalGroupMember -Member 'NT Authority\NetworkService' -Group Users;
 
