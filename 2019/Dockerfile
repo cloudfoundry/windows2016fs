@@ -84,7 +84,7 @@ RUN powershell.exe -command \
 
 # RUN %windir%\system32\inetsrv\appcmd.exe set AppPool DefaultAppPool /processModel.identityType:NetworkService
 
-COPY func.ps1 /func.ps1
+COPY UserRights.psm1 /UserRights.psm1
 RUN powershell.exe -command \
-  . /func.ps1; \
-  Add-ServiceLogonRight('vcap');
+  Import-Module /UserRights.psm1; \
+  Grant-UserRight -Account "vcap" -Right SeAssignPrimaryTokenPrivilege,SeAuditPrivilege,SeBatchLogonRight,SeChangeNotifyPrivilege,SeCreateGlobalPrivilege,SeImpersonatePrivilege,SeIncreaseQuotaPrivilege,SeInteractiveLogonRight,SeNetworkLogonRight,SeProfileSingleProcessPrivilege,SeSecurityPrivilege,SeServiceLogonRight,SeSystemtimePrivilege,SeTakeOwnershipPrivilege,
