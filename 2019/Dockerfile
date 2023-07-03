@@ -95,3 +95,6 @@ RUN cmd.exe /C gpupdate.exe /force /target:user
 
 RUN powershell.exe -command \
    Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Windows' -Name "NoInteractiveServices" -Value 0;
+
+RUN powershell.exe -command \
+   New-LocalUser  -Name wcap -NoPassword -UserMayNotChangePassword -AccountNeverExpires
