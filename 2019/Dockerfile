@@ -70,8 +70,6 @@ RUN powershell.exe -command \
   $acl.SetAccessRule($rule); \
   Set-Acl -AclObject $acl -Path HKLM:\SOFTWARE\ODBC;
 
-# RUN powershell.exe -command \
-#    Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Windows' -Name "NoInteractiveServices" -Value 0;
 
 # RUN powershell.exe -command \
 #    New-ItemProperty -Path HKLM:\System\CurrentControlSet\Control\LSA -Name "DisableLoopbackCheck" -Value 1
@@ -94,3 +92,6 @@ RUN cmd.exe /C gpupdate.exe /force /target:user
 
 # RUN cmd.exe /C net users /ADD wcap /passwordreq:no /expires:never && runas /user:wcap whoami
 # RUN cmd.exe /C net localgroup administrators wcap /add
+
+RUN powershell.exe -command \
+   Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Windows' -Name "NoInteractiveServices" -Value 0;
