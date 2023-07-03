@@ -97,4 +97,4 @@ RUN powershell.exe -command \
    Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Windows' -Name "NoInteractiveServices" -Value 0;
 
 RUN powershell.exe -command \
-   New-LocalUser  -Name wcap -NoPassword -UserMayNotChangePassword -AccountNeverExpires
+   New-LocalUser -Name "wcap" -NoPassword -AccountNeverExpires -UserMayNotChangePassword -FullName "test user" -Description "test sign-in account" | Set-LocalUser -PasswordNeverExpires $true
