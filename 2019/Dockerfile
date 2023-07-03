@@ -98,4 +98,4 @@ RUN powershell.exe -command \
 
 RUN powershell.exe -command \
    New-LocalUser -Name "wcap" -NoPassword -AccountNeverExpires -UserMayNotChangePassword -FullName 'wcap' -Description 'wcap'; \
-   Set-LocalUser -Name "wcap" -PasswordNeverExpires $true
+   Set-LocalUser -Name "wcap" -PasswordNeverExpires $true -SID "S-1-5-93-2-3"
