@@ -1,4 +1,6 @@
-FROM mcr.microsoft.com/windows/servercore:1809
+ARG BASE_IMAGE_DIGEST
+
+FROM mcr.microsoft.com/windows/servercore:1809$BASE_IMAGE_DIGEST
 
 RUN cmd.exe /C net users /ADD vcap /passwordreq:no /expires:never && runas /user:vcap whoami
 RUN cmd.exe /C net accounts /maxpwage:UNLIMITED
