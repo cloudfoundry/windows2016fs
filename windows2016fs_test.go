@@ -122,6 +122,7 @@ var _ = Describe("Windows2016fs", func() {
 
 		for i := 1; i <= concurrentConnections; i++ {
 			go func() {
+				defer GinkgoRecover()
 				expectMountSMBImage(shareUnc, shareUsername, sharePassword, tempDirPath, testImageNameAndTag)
 				wg.Done()
 			}()
