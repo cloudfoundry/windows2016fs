@@ -1,0 +1,10 @@
+
+HotFixID  InstalledOn           Description     InstalledBy                    
+--------  -----------           -----------     -----------                    
+KB5033904 1/2/2024 12:00:00 AM  Update                                         
+KB4486153 1/22/2024 12:00:00 AM Update          User Manager\ContainerAdmini...
+KB5034127 1/2/2024 12:00:00 AM  Security Update                                
+KB5032306 1/2/2024 12:00:00 AM  Security Update                                
+
+
+Image:cloudfoundry/windows2016fs:2019.0.159
