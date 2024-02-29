@@ -2,7 +2,6 @@ package windows2016fs_test
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"testing"
 
@@ -24,7 +23,7 @@ var (
 )
 
 var _ = BeforeSuite(func() {
-	tempDirPath, err = ioutil.TempDir("", "build")
+	tempDirPath, err = os.MkdirTemp("", "build")
 	Expect(err).NotTo(HaveOccurred())
 
 	shareName = lookupEnv("SHARE_NAME")
