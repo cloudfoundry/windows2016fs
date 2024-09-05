@@ -17,7 +17,6 @@ var (
 	shareUsername       string
 	sharePassword       string
 	shareName           string
-	sharePort           string
 	shareIP             string
 	shareFqdn           string
 	err                 error
@@ -30,7 +29,6 @@ var _ = BeforeSuite(func() {
 	shareName = lookupEnv("SHARE_NAME")
 	shareUsername = lookupEnv("SHARE_USERNAME")
 	sharePassword = lookupEnv("SHARE_PASSWORD")
-	sharePort = lookupEnv("SHARE_PORT")
 	shareFqdn = lookupEnv("SHARE_FQDN")
 	shareIP = lookupEnv("SHARE_IP")
 	tag = lookupEnv("VERSION_TAG")
