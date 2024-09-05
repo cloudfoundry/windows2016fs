@@ -3,7 +3,7 @@ trap {
     $host.SetShouldExit(1) 
 }
 
-net use t: $env:SHARE_UNC $env:SHARE_PASSWORD /user:$env:SHARE_USERNAME
+net use t: $env:SHARE_UNC $env:SHARE_PASSWORD /user:$env:SHARE_USERNAME /TCPPORT:$env:SHARE_PORT
 if ($LASTEXITCODE -ne 0) {
     echo "ERROR: could not create smb mapping"
     Get-EventLog -LogName System -Newest 3 | format-list -Property Message

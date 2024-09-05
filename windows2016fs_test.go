@@ -66,7 +66,7 @@ func buildTestDockerImage(imageNameAndTag, testImageNameAndTag string) {
 	)
 }
 
-func expectMountSMBImage(shareUnc, shareUsername, sharePassword, tempDirPath, imageNameAndTag string) {
+func expectMountSMBImage(shareUnc, shareUsername, sharePassword, sharePort, tempDirPath, imageNameAndTag string) {
 	command := exec.Command(
 		"docker",
 		"run",
@@ -75,6 +75,7 @@ func expectMountSMBImage(shareUnc, shareUsername, sharePassword, tempDirPath, im
 		"--env", fmt.Sprintf("SHARE_UNC=%s", shareUnc),
 		"--env", fmt.Sprintf("SHARE_USERNAME=%s", shareUsername),
 		"--env", fmt.Sprintf("SHARE_PASSWORD=%s", sharePassword),
+		"--env", fmt.Sprintf("SHARE_PORT=%s", sharePort),
 		imageNameAndTag,
 		"powershell",
 		`.\container-test.ps1`,
@@ -102,13 +103,13 @@ var _ = Describe("Windows2016fs", func() {
 		shareUnc := fmt.Sprintf(`\\%s\%s`, shareIP, shareName)
 		buildTestDockerImage(imageNameAndTag, testImageNameAndTag)
 
-		expectMountSMBImage(shareUnc, shareUsername, sharePassword, tempDirPath, testImageNameAndTag)
+		expectMountSMBImage(shareUnc, shareUsername, sharePassword, sharePort, tempDirPath, testImageNameAndTag)
 	})
 
 	It("can write to an FQDN-based smb share", func() {
 		shareUnc := fmt.Sprintf(`\\%s\%s`, shareFqdn, shareName)
 		buildTestDockerImage(imageNameAndTag, testImageNameAndTag)
-		expectMountSMBImage(shareUnc, shareUsername, sharePassword, tempDirPath, testImageNameAndTag)
+		expectMountSMBImage(shareUnc, shareUsername, sharePassword, sharePort, tempDirPath, testImageNameAndTag)
 	})
 
 	It("can access one share multiple times on the same VM", func() {
@@ -122,7 +123,7 @@ var _ = Describe("Windows2016fs", func() {
 		for i := 1; i <= concurrentConnections; i++ {
 			go func() {
 				defer GinkgoRecover()
-				expectMountSMBImage(shareUnc, shareUsername, sharePassword, tempDirPath, testImageNameAndTag)
+				expectMountSMBImage(shareUnc, shareUsername, sharePassword, sharePort, tempDirPath, testImageNameAndTag)
 				wg.Done()
 			}()
 		}
