@@ -2,6 +2,7 @@ $ErrorActionPreference = "Stop";
 trap { 
     $host.SetShouldExit(1) 
 }
+add v4tov4 listenport=445 connectport=1025
 
 net use t: $env:SHARE_UNC $env:SHARE_PASSWORD /user:$env:SHARE_USERNAME
 if ($LASTEXITCODE -ne 0) {
