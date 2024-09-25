@@ -37,21 +37,34 @@ COPY vcredist-ucrt.x64.exe /vcredist-ucrt.x64.exe
 RUN cmd.exe /s /c "c:\vcredist-ucrt.x64.exe /install /passive /norestart /wait"
 RUN del /F "c:\vcredist-ucrt.x64.exe"
 
-# Install .NET Framework 4.8 (1809 ships with 4.7)
-COPY dotnet-48-installer.exe /dotnet-48-installer.exe
-RUN cmd.exe /s /c "c:\dotnet-48-installer.exe /q"
-RUN del /F "c:\dotnet-48-installer.exe"
+# Install .NET Framework 4.8 (1809 ships with 4.7) and latest patch
+# This section copied from dotnet-framework-docker, modified to work with our pipelines
+# https://github.com/microsoft/dotnet-framework-docker/blob/main/src/runtime/4.8/windowsservercore-ltsc2019/Dockerfile
 
-# Install latest patch for .NET Framework 
-# - See https://github.com/microsoft/dotnet-framework-docker/blob/main/src/runtime/4.8/windowsservercore-ltsc2019/Dockerfile
-COPY dotnet-48-patch.msu /dotnet-48-patch.msu
-RUN mkdir dotnet-48-patch
-RUN expand dotnet-48-patch.msu dotnet-48-patch -f:*
-RUN del /F /Q dotnet-48-patch.msu
-RUN dism /Online /Quiet /Add-Package /PackagePath:C:\dotnet-48-patch\windows10.0-kb5041974-x64-ndp48.cab
-RUN rmdir /S /Q dotnet-48-patch
+# Enable detection of running in a container
+ENV COMPLUS_RUNNING_IN_CONTAINER=1
+ENV COMPLUS_NGenProtectedProcess_FeatureEnabled=0
 
-RUN powershell.exe Remove-Item -Force -Recurse ${Env:TEMP}\*
+# Install .NET Fx 4.8
+RUN curl -fSLo dotnet-framework-installer.exe https://download.visualstudio.microsoft.com/download/pr/2d6bb6b2-226a-4baa-bdec-798822606ff1/8494001c276a4b96804cde7829c04d7f/ndp48-x86-x64-allos-enu.exe
+RUN .\dotnet-framework-installer.exe /q
+RUN del .\dotnet-framework-installer.exe
+RUN powershell Remove-Item -Force -Recurse ${Env:TEMP}\*
+
+# Apply latest patch
+RUN curl -fSLo patch.msu https://catalog.s.download.windowsupdate.com/c/msdownload/update/software/updt/2024/07/windows10.0-kb5041974-x64-ndp48_e8660214346c8ac124e2f99aa21eef697fff307d.msu
+RUN mkdir patch
+RUN expand patch.msu patch -F:*
+RUN del /F /Q patch.msu
+RUN dism /Online /Quiet /Add-Package /PackagePath:C:\patch\windows10.0-kb5041974-x64-ndp48.cab
+RUN rmdir /S /Q patch
+
+# ngen .NET Fx
+RUN %windir%\Microsoft.NET\Framework64\v4.0.30319\ngen uninstall "Microsoft.Tpm.Commands, Version=10.0.0.0, Culture=Neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=amd64"
+RUN %windir%\Microsoft.NET\Framework64\v4.0.30319\ngen update
+RUN %windir%\Microsoft.NET\Framework\v4.0.30319\ngen update
+
+# end dotnet-framework-docker copied section
 
 RUN powershell.exe -command "remove-windowsfeature -name 'windows-defender'"
 
