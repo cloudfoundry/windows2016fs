@@ -42,6 +42,15 @@ COPY dotnet-48-installer.exe /dotnet-48-installer.exe
 RUN cmd.exe /s /c "c:\dotnet-48-installer.exe /q"
 RUN del /F "c:\dotnet-48-installer.exe"
 
+# Install latest patch for .NET Framework 
+# - See https://github.com/microsoft/dotnet-framework-docker/blob/main/src/runtime/4.8/windowsservercore-ltsc2019/Dockerfile
+COPY dotnet-48-patch.msu /dotnet-48-patch.msu
+RUN mkdir dotnet-48-patch
+RUN expand dotnet-48-patch.msu dotnet-48-patch -f:*
+RUN del /F /Q dotnet-48-patch.msu
+RUN dism /Online /Quiet /Add-Package /PackagePath:C:\dotnet-48-patch\windows10.0-kb5041974-x64-ndp48.cab
+RUN rmdir /S /Q dotnet-48-patch
+
 RUN powershell.exe Remove-Item -Force -Recurse ${Env:TEMP}\*
 
 RUN powershell.exe -command "remove-windowsfeature -name 'windows-defender'"
