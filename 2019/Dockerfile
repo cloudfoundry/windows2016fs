@@ -1,6 +1,8 @@
 ARG BASE_IMAGE_DIGEST
-
 FROM mcr.microsoft.com/windows/servercore:1809$BASE_IMAGE_DIGEST
+ARG DOTNET_INSTALLER_LINK
+ARG DOTNET_PATCH_LINK
+ARG DOTNET_PACKAGE_PATH
 
 RUN cmd.exe /C net users /ADD vcap /passwordreq:no /expires:never && runas /user:vcap whoami
 RUN cmd.exe /C net accounts /maxpwage:UNLIMITED
@@ -18,27 +20,27 @@ COPY Git-*-64-bit.exe /git-setup.exe
 RUN C:\git-setup.exe /SILENT /NORESTART
 RUN del /F C:\git-setup.exe
 
-COPY rewrite*.msi /Windows/rewrite.msi
+ADD https://download.microsoft.com/download/1/2/8/128E2E22-C1B9-44A4-BE2A-5859ED1D4592/rewrite_amd64_en-US.msi /Windows/rewrite.msi
 RUN msiexec /i C:\Windows\rewrite.msi /qn /quiet
 
-COPY vcredist-2010.x86.exe /vcredist-2010.x86.exe
+ADD https://download.microsoft.com/download/1/6/5/165255E7-1014-4D0A-B094-B6A430A6BFFC/vcredist_x86.exe /vcredist-2010.x86.exe
 RUN cmd.exe /s /c "c:\vcredist-2010.x86.exe /install /passive /norestart /wait"
 RUN del /F "c:\vcredist-2010.x86.exe"
 
-COPY vcredist-2010.x64.exe /vcredist-2010.x64.exe
+ADD https://download.microsoft.com/download/1/6/5/165255E7-1014-4D0A-B094-B6A430A6BFFC/vcredist_x64.exe /vcredist-2010.x64.exe
 RUN cmd.exe /s /c "c:\vcredist-2010.x64.exe /install /passive /norestart /wait"
 RUN del /F "c:\vcredist-2010.x64.exe"
 
-COPY vcredist-ucrt.x86.exe /vcredist-ucrt.x86.exe
+ADD https://download.visualstudio.microsoft.com/download/pr/9613cb5b-2786-49cd-8d90-73abd90aa50a/29F649C08928B31E6BB11D449626DA14B5E99B5303FE2B68AFA63732EF29C946/VC_redist.x86.exe /vcredist-ucrt.x86.exe
 RUN cmd.exe /s /c "c:\vcredist-ucrt.x86.exe /install /passive /norestart /wait"
 RUN del /F "c:\vcredist-ucrt.x86.exe"
 
-COPY vcredist-ucrt.x64.exe /vcredist-ucrt.x64.exe
+ADD https://download.visualstudio.microsoft.com/download/pr/9613cb5b-2786-49cd-8d90-73abd90aa50a/CEE28F29F904524B7F645BCEC3DFDFE38F8269B001144CD909F5D9232890D33B/VC_redist.x64.exe /vcredist-ucrt.x64.exe
 RUN cmd.exe /s /c "c:\vcredist-ucrt.x64.exe /install /passive /norestart /wait"
 RUN del /F "c:\vcredist-ucrt.x64.exe"
 
 # Install .NET Framework 4.8 (1809 ships with 4.7) and latest patch
-# This section copied from dotnet-framework-docker, modified to work with our pipelines
+# This section copied from dotnet-framework-docker, modified to work with our pipelines and auto-update
 # https://github.com/microsoft/dotnet-framework-docker/blob/main/src/runtime/4.8/windowsservercore-ltsc2019/Dockerfile
 
 # Enable detection of running in a container
@@ -46,17 +48,18 @@ ENV COMPLUS_RUNNING_IN_CONTAINER=1
 ENV COMPLUS_NGenProtectedProcess_FeatureEnabled=0
 
 # Install .NET Fx 4.8
-RUN curl -fSLo dotnet-framework-installer.exe https://download.visualstudio.microsoft.com/download/pr/2d6bb6b2-226a-4baa-bdec-798822606ff1/8494001c276a4b96804cde7829c04d7f/ndp48-x86-x64-allos-enu.exe
-RUN .\dotnet-framework-installer.exe /q
-RUN del .\dotnet-framework-installer.exe
+RUN powershell -Command "wget -UseBasicParsing -OutFile /dotnet-framework-installer.exe ${env:DOTNET_INSTALLER_LINK}" \
+&& c:\dotnet-framework-installer.exe /q  \
+&& del c:\dotnet-framework-installer.exe
 RUN powershell Remove-Item -Force -Recurse ${Env:TEMP}\*
 
 # Apply latest patch
-RUN curl -fSLo patch.msu https://catalog.s.download.windowsupdate.com/c/msdownload/update/software/updt/2024/07/windows10.0-kb5041974-x64-ndp48_e8660214346c8ac124e2f99aa21eef697fff307d.msu
-RUN mkdir patch
-RUN expand patch.msu patch -F:*
-RUN del /F /Q patch.msu
-RUN dism /Online /Quiet /Add-Package /PackagePath:C:\patch\windows10.0-kb5041974-x64-ndp48.cab
+RUN powershell -Command "wget -UseBasicParsing -OutFile /patch.msu ${env:DOTNET_PATCH_LINK}" \
+&& mkdir patch \
+&& expand c:\patch.msu c:\patch -F:* \
+&& del /F /Q c:\patch.msu
+
+RUN dism /Quiet /Online /Add-Package %DOTNET_PACKAGE_PATH%
 RUN rmdir /S /Q patch
 
 # ngen .NET Fx
