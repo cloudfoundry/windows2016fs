@@ -1,11 +1,11 @@
 
 HotFixID  InstalledOn           Description     InstalledBy                    
 --------  -----------           -----------     -----------                    
-KB5055175 5/13/2025 12:00:00 AM Update          User Manager\ContainerAdmini...
-KB4486153 5/13/2025 12:00:00 AM Update          User Manager\ContainerAdmini...
-KB5058392 5/9/2025 12:00:00 AM  Security Update                                
-KB5058525 5/9/2025 12:00:00 AM  Security Update                                
+KB5055175 6/10/2025 12:00:00 AM Update          User Manager\ContainerAdmini...
+KB4486153 6/10/2025 12:00:00 AM Update          User Manager\ContainerAdmini...
+KB5060531 6/4/2025 12:00:00 AM  Security Update                                
+KB5058525 6/4/2025 12:00:00 AM  Security Update                                
 
 
-Image:cloudfoundry/windows2016fs:2019.0.193
+Image:cloudfoundry/windows2016fs:2019.0.194
 .NET Framework 4.8.4785.0
